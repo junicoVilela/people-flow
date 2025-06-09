@@ -1,0 +1,485 @@
+{
+	"info": {
+		"_postman_id": "rh-system-api",
+		"name": "Sistema RH - API",
+		"description": "Coleção completa da API do Sistema RH com autenticação JWT",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": []
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": []
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080/api",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": "",
+			"type": "string"
+		}
+	],
+	"item": [
+		{
+			"name": "🔐 Autenticação",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const responseJson = pm.response.json();",
+									"    pm.collectionVariables.set('token', responseJson.token);",
+									"    console.log('Token salvo:', responseJson.token);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"admin@empresa.com\",\n  \"senha\": \"123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						},
+						"description": "Realizar login no sistema. Usuários disponíveis:\n- admin@empresa.com / 123456 (ADMIN)\n- rh@empresa.com / 123456 (RH)\n- joao.silva@empresa.com / 123456 (COLABORADOR)\n- maria.santos@empresa.com / 123456 (COLABORADOR)"
+					},
+					"response": [
+						{
+							"name": "Login Sucesso",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"admin@empresa.com\",\n  \"senha\": \"123456\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/auth/login",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"auth",
+										"login"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [],
+							"cookie": [],
+							"body": "{\n  \"token\": \"eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiQURNSU4iLCJub21lIjoiQWRtaW5pc3RyYWRvciBkbyBTaXN0ZW1h\",\n  \"usuarioId\": 1,\n  \"nome\": \"Administrador do Sistema\",\n  \"email\": \"admin@empresa.com\",\n  \"role\": \"ADMIN\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Login - RH",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"rh@empresa.com\",\n  \"senha\": \"123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						},
+						"description": "Login com usuário do departamento de RH"
+					}
+				},
+				{
+					"name": "Login - Colaborador",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"joao.silva@empresa.com\",\n  \"senha\": \"123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						},
+						"description": "Login com usuário colaborador"
+					}
+				}
+			],
+			"description": "Endpoints de autenticação do sistema",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": []
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": []
+					}
+				}
+			]
+		},
+		{
+			"name": "👥 Colaboradores",
+			"item": [
+				{
+					"name": "Cadastrar Colaborador",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nome\": \"Carlos Eduardo Silva\",\n  \"email\": \"carlos.silva@empresa.com\",\n  \"senha\": \"123456\",\n  \"cpf\": \"12345678901\",\n  \"rg\": \"1234567\",\n  \"dataNascimento\": \"1985-06-15\",\n  \"sexo\": \"M\",\n  \"telefone\": \"(11) 99999-9999\",\n  \"estadoCivil\": \"Casado\",\n  \"endereco\": \"Rua das Flores, 123, São Paulo - SP\",\n  \"cargo\": \"Desenvolvedor Sênior\",\n  \"departamento\": \"Tecnologia da Informação\",\n  \"salario\": 7500.00,\n  \"dataAdmissao\": \"2024-01-15\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/colaboradores",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"colaboradores"
+							]
+						},
+						"description": "Cadastrar novo colaborador no sistema. Requer perfil ADMIN ou RH."
+					},
+					"response": [
+						{
+							"name": "Colaborador Criado",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"nome\": \"Carlos Eduardo Silva\",\n  \"email\": \"carlos.silva@empresa.com\",\n  \"senha\": \"123456\",\n  \"cpf\": \"12345678901\",\n  \"rg\": \"1234567\",\n  \"dataNascimento\": \"1985-06-15\",\n  \"sexo\": \"M\",\n  \"telefone\": \"(11) 99999-9999\",\n  \"estadoCivil\": \"Casado\",\n  \"endereco\": \"Rua das Flores, 123, São Paulo - SP\",\n  \"cargo\": \"Desenvolvedor Sênior\",\n  \"departamento\": \"Tecnologia da Informação\",\n  \"salario\": 7500.00,\n  \"dataAdmissao\": \"2024-01-15\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/colaboradores",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"colaboradores"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [],
+							"cookie": [],
+							"body": "{\n  \"id\": 1,\n  \"nome\": \"Carlos Eduardo Silva\",\n  \"email\": \"carlos.silva@empresa.com\",\n  \"cpf\": \"12345678901\",\n  \"cargo\": \"Desenvolvedor Sênior\",\n  \"departamento\": \"Tecnologia da Informação\",\n  \"salario\": 7500.00,\n  \"status\": \"ATIVO\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Listar Todos os Colaboradores",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/colaboradores",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"colaboradores"
+							]
+						},
+						"description": "Listar todos os colaboradores cadastrados. Requer perfil ADMIN ou RH."
+					}
+				},
+				{
+					"name": "Listar Colaboradores Ativos",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/colaboradores/ativos",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"colaboradores",
+								"ativos"
+							]
+						},
+						"description": "Listar apenas colaboradores com status ATIVO. Requer perfil ADMIN ou RH."
+					}
+				},
+				{
+					"name": "Buscar Colaborador por ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/colaboradores/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"colaboradores",
+								"1"
+							]
+						},
+						"description": "Buscar colaborador específico por ID. Requer perfil ADMIN ou RH."
+					}
+				},
+				{
+					"name": "Atualizar Colaborador",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nome\": \"Carlos Eduardo Silva Santos\",\n  \"telefone\": \"(11) 88888-8888\",\n  \"endereco\": \"Rua Nova, 456, São Paulo - SP\",\n  \"cargo\": \"Desenvolvedor Especialista\",\n  \"departamento\": \"Tecnologia da Informação\",\n  \"salario\": 9000.00\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/colaboradores/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"colaboradores",
+								"1"
+							]
+						},
+						"description": "Atualizar dados do colaborador. Requer perfil ADMIN ou RH."
+					}
+				},
+				{
+					"name": "Inativar Colaborador",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"dataDemissao\": \"2024-12-31\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/colaboradores/1/inativar",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"colaboradores",
+								"1",
+								"inativar"
+							]
+						},
+						"description": "Inativar colaborador (desligamento). Requer perfil ADMIN ou RH."
+					}
+				}
+			],
+			"description": "Operações relacionadas ao gerenciamento de colaboradores",
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "string"
+					}
+				]
+			}
+		},
+		{
+			"name": "🗄️ Database & Debug",
+			"item": [
+				{
+					"name": "H2 Console",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/h2-console",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"h2-console"
+							]
+						},
+						"description": "Acesso ao console do banco H2 para desenvolvimento.\n\nConfiguração:\n- JDBC URL: jdbc:h2:mem:rhdb\n- User: sa\n- Password: password"
+					}
+				},
+				{
+					"name": "Test Auth Controller",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/auth/test",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"test"
+							]
+						},
+						"description": "Endpoint simples para testar se o controller de autenticação está funcionando"
+					}
+				}
+			],
+			"description": "Endpoints para debugging e acesso ao banco de dados"
+		}
+	]
+} 

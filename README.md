@@ -1,0 +1,168 @@
+# People Flow
+
+Um sistema moderno de gestão de fluxo de pessoas e recursos humanos desenvolvido com **Arquitetura Hexagonal** (Ports & Adapters), seguindo os princípios da **Arquitetura Limpa**.
+
+## 🏗️ Arquitetura
+
+O **People Flow** foi estruturado seguindo os princípios da **Arquitetura Hexagonal**, com uma clara separação entre as responsabilidades:
+
+```
+src/main/java/com/vilelatech/rh/
+├── adapters/                       # 🔧 Implementações
+│   ├── inbound/                    # Adapters de Entrada (mais explícito)
+│   │   └── web/
+│   │       └── controller/         # Controllers REST
+│   │           ├── AuthController.java
+│   │           └── ColaboradorController.java
+│   └── outbound/                   # Adapters de Saída (mais explícito)
+│       ├── persistence/            # Persistência JPA
+│       │   ├── entity/            # Entidades JPA
+│       │   │   ├── ColaboradorEntity.java
+│       │   │   ├── RegistroPontoEntity.java
+│       │   │   └── UsuarioEntity.java
+│       │   ├── repository/         # Repositórios JPA
+│       │   │   ├── ColaboradorJpaRepository.java
+│       │   │   ├── RegistroPontoJpaRepository.java
+│       │   │   └── UsuarioJpaRepository.java
+│       │   ├── ColaboradorRepositoryAdapter.java
+│       │   ├── RegistroPontoRepositoryAdapter.java
+│       │   └── UsuarioRepositoryAdapter.java
+│       └── messaging/              # Adaptadores de Mensageria
+│           └── kafka/              # Integração com Kafka
+│               ├── ColaboradorEventProducer.java
+│               └── RegistroPontoEventProducer.java
+├── application/                     # 💼 Casos de Uso
+│   ├── dto/                        # DTOs organizados por contexto
+│   │   ├── auth/                   # DTOs de autenticação
+│   │   │   ├── LoginRequest.java
+│   │   │   └── LoginResponse.java
+│   │   └── colaborador/            # DTOs de colaborador
+│   │       ├── ColaboradorRequest.java
+│   │       ├── ColaboradorResponse.java
+│   │       ├── ColaboradorUpdateRequest.java
+│   │       └── InativacaoRequest.java
+│   ├── exception/                  # 🚨 Exceções de Aplicação
+│   │   ├── EntidadeNaoEncontradaException.java
+│   │   ├── NegocioException.java
+│   │   ├── ValidacaoException.java
+│   │   └── AutenticacaoException.java
+│   ├── mapper/                     # Mappers de conversão
+│   │   ├── ColaboradorDtoMapper.java
+│   │   ├── ColaboradorMapper.java
+│   │   ├── RegistroPontoMapper.java
+│   │   └── UsuarioMapper.java
+│   └── usecase/                    # Regras de negócio
+│       ├── auth/
+│       │   ├── AuthUseCase.java
+│       │   └── JwtProvider.java
+│       └── colaborador/
+│           └── ColaboradorUseCase.java
+├── domain/                           # 🎯 Núcleo de Negócio
+│   ├── event/                      # 📢 Eventos de Domínio
+│   │   ├── ColaboradorCriadoEvent.java
+│   │   ├── ColaboradorInativadoEvent.java
+│   │   ├── RegistroPontoLancadoEvent.java
+│   │   └── DomainEventPublisher.java
+│   ├── exception/                  # 🚨 Exceções de Domínio
+│   │   ├── ColaboradorInvalidoException.java
+│   │   ├── RegistroPontoInvalidoException.java
+│   │   └── RegrasNegocioException.java
+│   ├── model/                      # Entidades e enums de domínio
+│   │   ├── Colaborador.java
+│   │   ├── RegistroPonto.java
+│   │   ├── Role.java
+│   │   ├── Status.java
+│   │   ├── TipoRegistro.java
+│   │   └── Usuario.java
+│   └── validation/                 # 🔍 Validações Críticas de Domínio
+│       ├── CpfValidator.java
+│       └── EmailValidator.java
+├── infrastructure/                 # ⚙️ Configurações Técnicas
+│   ├── config/
+│   │   ├── JpaConfig.java
+│   │   └── SecurityTestConfig.java
+│   ├── messaging/                  # 📨 Configurações de Mensageria
+│   │   ├── KafkaConfig.java
+│   │   ├── EventPublisherConfig.java
+│   │   └── SpringDomainEventPublisher.java
+│   └── security/
+│       ├── JwtAuthenticationEntryPoint.java
+│       ├── JwtAuthenticationFilter.java
+│       └── SecurityConfig.java
+├── ports/                           # 🔌 Contratos (Interfaces)
+│   ├── ColaboradorRepository.java
+│   ├── RegistroPontoRepository.java
+│   └── UsuarioRepository.java
+├── common/                         # 🛠️ Utilitários Compartilhados (renomeado de shared)
+│   ├── util/                       # Utilitários comuns
+│   │   ├── DateUtil.java
+│   │   └── StringUtil.java
+│   └── validation/                 # Validações de Aplicação
+│       ├── ValidadorCpf.java
+│       ├── ValidadorEmail.java
+│       └── ValidadorTelefone.java
+└── RhApplication.java              # 🚀 Classe principal
+```
+
+### 🎯 Benefícios da Arquitetura
+
+- **🔌 Ports**: Definem **contratos claros** entre as camadas
+- **🔧 Adapters**: **Implementações concretas** que podem ser facilmente substituídas
+- **💼 Application**: **Casos de uso** independentes de frameworks externos
+- **🎯 Domain**: **Regras de negócio puras**, sem dependências externas
+- **📦 DTOs Organizados**: Agrupados por **contexto de negócio** para melhor manutenibilidade
+- **🚨 Exceções Centralizadas**: Hierarquia organizada de exceções por camada
+- **📢 Eventos de Domínio**: Suporte a event sourcing e comunicação assíncrona
+- **🔍 Validações Críticas**: Validadores de domínio para regras de negócio essenciais
+- **🛠️ Utilitários Comuns**: Helpers e validações reutilizáveis organizados
+- **📨 Mensageria Estruturada**: Configurações e adaptadores organizados por broker
+- **🎯 Nomenclatura Explícita**: `inbound/outbound` mais clara que `in/out`
+- **📋 Separação Clara**: Validações críticas no domínio, validações de aplicação em `common`
+
+## ✨ Funcionalidades
+
+### 🔐 **Autenticação e Autorização**
+- Login com e-mail e senha
+- Geração e validação de tokens JWT
+- Controle de acesso por perfil (`ADMIN`, `RH`, `COLABORADOR`)
+
+### 👥 **Gestão de Colaboradores**
+- ✅ Cadastro de colaboradores
+- 📋 Listagem de colaboradores (todos/ativos)
+- 🔍 Visualização de detalhes
+- ✏️ Edição de dados
+- ❌ Inativação (demissão)
+
+## 🛠️ Tecnologias Utilizadas
+
+### **Backend**
+- ☕ **Java 21** - Linguagem de programação
+- 🍃 **Spring Boot 3.2.5** - Framework principal
+- 🔒 **Spring Security** - Segurança e autenticação
+- 🗄️ **Spring Data JPA** - Persistência de dados
+- 🎫 **JWT** - Tokens de autenticação
+- 🗃️ **H2 Database** - Banco em memória (desenvolvimento)
+- 🔧 **MapStruct** - Mapeamento automático entre objetos
+- 📝 **Lombok** - Redução de código boilerplate
+
+### **Arquitetura**
+- 🏗️ **Hexagonal Architecture** (Ports & Adapters)
+- 🧹 **Clean Architecture** - Separação de responsabilidades
+- 📦 **Domain-Driven Design** - Organização por contextos de negócio
+
+## 🚀 Como Executar
+
+### 📋 **Pré-requisitos**
+- ☕ JDK 21 ou superior
+- 📦 Maven 3.8+
+
+### 🔧 **Passos**
+
+1. **Clone o repositório**
+   ```bash
+   git clone https://github.com/seu-usuario/people-flow.git
+   cd people-flow
+   ```
+
+2. **Compile e execute**
+   ```
