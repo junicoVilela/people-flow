@@ -2,8 +2,8 @@ package com.vilelatech.rh.adapters.outbound.persistence;
 
 import com.vilelatech.rh.application.mapper.ColaboradorMapper;
 import com.vilelatech.rh.adapters.outbound.persistence.repository.ColaboradorJpaRepository;
-import com.vilelatech.rh.domain.model.Colaborador;
-import com.vilelatech.rh.domain.model.Status;
+import com.vilelatech.rh.domain.model.ColaboradorModel;
+import com.vilelatech.rh.domain.model.enums.Status;
 import com.vilelatech.rh.ports.ColaboradorRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -22,39 +22,39 @@ public class ColaboradorRepositoryAdapter implements ColaboradorRepository {
     private final ColaboradorMapper colaboradorMapper;
     
     @Override
-    public Colaborador save(Colaborador colaborador) {
-        var entity = colaboradorMapper.toEntity(colaborador);
+    public ColaboradorModel save(ColaboradorModel colaboradorModel) {
+        var entity = colaboradorMapper.toEntity(colaboradorModel);
         entity = colaboradorJpaRepository.save(entity);
         return colaboradorMapper.toDomain(entity);
     }
     
     @Override
-    public Optional<Colaborador> findById(Long id) {
+    public Optional<ColaboradorModel> findById(Long id) {
         return colaboradorJpaRepository.findById(id)
                 .map(colaboradorMapper::toDomain);
     }
     
     @Override
-    public Optional<Colaborador> findByUsuarioId(Long usuarioId) {
+    public Optional<ColaboradorModel> findByUsuarioId(Long usuarioId) {
         return colaboradorJpaRepository.findByUsuarioId(usuarioId)
                 .map(colaboradorMapper::toDomain);
     }
     
     @Override
-    public List<Colaborador> findAll() {
+    public List<ColaboradorModel> findAll() {
         return colaboradorJpaRepository.findAll().stream()
                 .map(colaboradorMapper::toDomain)
                 .collect(Collectors.toList());
     }
     
     @Override
-    public Page<Colaborador> findAll(Pageable pageable) {
+    public Page<ColaboradorModel> findAll(Pageable pageable) {
         return colaboradorJpaRepository.findAll(pageable)
                 .map(colaboradorMapper::toDomain);
     }
     
     @Override
-    public List<Colaborador> findByStatus(Status status) {
+    public List<ColaboradorModel> findByStatus(Status status) {
         return colaboradorJpaRepository.findByStatus(status).stream()
                 .map(colaboradorMapper::toDomain)
                 .collect(Collectors.toList());

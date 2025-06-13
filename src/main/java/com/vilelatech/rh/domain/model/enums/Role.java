@@ -1,4 +1,4 @@
-package com.vilelatech.rh.domain.model;
+package com.vilelatech.rh.domain.model.enums;
 
 public enum Role {
     ADMIN,

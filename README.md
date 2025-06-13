@@ -36,7 +36,7 @@ src/main/java/com/vilelatech/rh/
 │   │   ├── auth/                   # DTOs de autenticação
 │   │   │   ├── LoginRequest.java
 │   │   │   └── LoginResponse.java
-│   │   └── colaborador/            # DTOs de colaborador
+│   │   └── colaboradorModel/            # DTOs de colaboradorModel
 │   │       ├── ColaboradorRequest.java
 │   │       ├── ColaboradorResponse.java
 │   │       ├── ColaboradorUpdateRequest.java
@@ -55,7 +55,7 @@ src/main/java/com/vilelatech/rh/
 │       ├── auth/
 │       │   ├── AuthUseCase.java
 │       │   └── JwtProvider.java
-│       └── colaborador/
+│       └── colaboradorModel/
 │           └── ColaboradorUseCase.java
 ├── domain/                           # 🎯 Núcleo de Negócio
 │   ├── event/                      # 📢 Eventos de Domínio

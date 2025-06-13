@@ -1,15 +1,14 @@
 package com.vilelatech.rh.application.mapper;
 
-import com.vilelatech.rh.adapters.outbound.persistence.entity.RegistroPontoEntity;
-import com.vilelatech.rh.domain.model.RegistroPonto;
+import com.vilelatech.rh.adapters.outbound.persistence.entity.RegistroPonto;
+import com.vilelatech.rh.domain.model.RegistroPontoModel;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
 @Mapper(uses = {ColaboradorMapper.class}, unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface RegistroPontoMapper {
 
-    RegistroPonto toDomain(RegistroPontoEntity entity);
+    RegistroPontoModel toDomain(RegistroPonto entity);
 
-    RegistroPontoEntity toEntity(RegistroPonto domain);
+    RegistroPonto toEntity(RegistroPontoModel domain);
 } 

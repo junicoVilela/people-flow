@@ -1,6 +1,6 @@
 package com.vilelatech.rh.domain.event;
 
-import com.vilelatech.rh.domain.model.TipoRegistro;
+import com.vilelatech.rh.domain.model.enums.TipoRegistro;
 import java.time.LocalDateTime;
 
 /**

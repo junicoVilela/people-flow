@@ -1,7 +1,7 @@
 package com.vilelatech.rh.infrastructure.security;
 
 import com.vilelatech.rh.application.usecase.auth.JwtProvider;
-import com.vilelatech.rh.domain.model.Usuario;
+import com.vilelatech.rh.domain.model.UsuarioModel;
 import com.vilelatech.rh.ports.UsuarioRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -44,10 +44,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 String username = jwtProvider.extractUsername(jwt);
                 
                 if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                    Optional<Usuario> usuarioOpt = usuarioRepository.findByEmail(username);
+                    Optional<UsuarioModel> usuarioOpt = usuarioRepository.findByEmail(username);
                     
                     if (usuarioOpt.isPresent()) {
-                        Usuario usuario = usuarioOpt.get();
+                        UsuarioModel usuario = usuarioOpt.get();
                         UserDetails userDetails = buildUserDetails(usuario);
                         
                         if (jwtProvider.validateToken(jwt, userDetails)) {
@@ -82,7 +82,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         return null;
     }
     
-    private UserDetails buildUserDetails(Usuario usuario) {
+    private UserDetails buildUserDetails(UsuarioModel usuario) {
         return new org.springframework.security.core.userdetails.User(
                 usuario.getEmail(),
                 usuario.getSenhaHash(),

@@ -1,5 +1,6 @@
 package com.vilelatech.rh.domain.model;
 
+import com.vilelatech.rh.domain.model.enums.Status;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,7 +14,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Colaborador {
+public class ColaboradorModel {
     private Long id;
     private Long usuarioId;
     private String cpf;
@@ -32,6 +33,5 @@ public class Colaborador {
     private LocalDateTime dataCriacao;
     private LocalDateTime dataAtualizacao;
 
-    // Relação com usuário (não é armazenada no banco, apenas para facilitar o uso)
-    private Usuario usuario;
+    private UsuarioModel usuario;
 } 

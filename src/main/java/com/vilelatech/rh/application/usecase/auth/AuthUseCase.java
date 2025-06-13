@@ -2,7 +2,7 @@ package com.vilelatech.rh.application.usecase.auth;
 
 import com.vilelatech.rh.application.dto.auth.LoginRequest;
 import com.vilelatech.rh.application.dto.auth.LoginResponse;
-import com.vilelatech.rh.domain.model.Usuario;
+import com.vilelatech.rh.domain.model.UsuarioModel;
 import com.vilelatech.rh.ports.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -17,7 +17,7 @@ public class AuthUseCase {
     private final PasswordEncoder passwordEncoder;
 
     public LoginResponse login(LoginRequest request) {
-        Usuario usuario = usuarioRepository.findByEmail(request.getEmail())
+        UsuarioModel usuario = usuarioRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new BadCredentialsException("Credenciais inválidas"));
 
         // Usando PasswordEncoder (que agora faz comparação direta sem criptografia)

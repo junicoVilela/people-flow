@@ -1,6 +1,6 @@
 package com.vilelatech.rh.application.dto.colaborador;
 
-import com.vilelatech.rh.domain.model.Status;
+import com.vilelatech.rh.domain.model.enums.Status;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

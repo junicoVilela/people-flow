@@ -1,6 +1,6 @@
 package com.vilelatech.rh.application.usecase.auth;
 
-import com.vilelatech.rh.domain.model.Usuario;
+import com.vilelatech.rh.domain.model.UsuarioModel;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -29,7 +29,7 @@ public class JwtProvider {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public String generateToken(Usuario usuario) {
+    public String generateToken(UsuarioModel usuario) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("role", usuario.getRole().name());
         claims.put("userId", usuario.getId().toString());

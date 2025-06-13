@@ -1,6 +1,6 @@
 package com.vilelatech.rh.application.dto.auth;
 
-import com.vilelatech.rh.domain.model.Role;
+import com.vilelatech.rh.domain.model.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

@@ -1,6 +1,6 @@
 package com.vilelatech.rh.adapters.outbound.persistence.entity;
 
-import com.vilelatech.rh.domain.model.Role;
+import com.vilelatech.rh.domain.model.enums.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UsuarioEntity {
+public class Usuario {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,13 +1,13 @@
 package com.vilelatech.rh.application.mapper;
 
-import com.vilelatech.rh.adapters.outbound.persistence.entity.UsuarioEntity;
-import com.vilelatech.rh.domain.model.Usuario;
+import com.vilelatech.rh.adapters.outbound.persistence.entity.Usuario;
+import com.vilelatech.rh.domain.model.UsuarioModel;
 import org.mapstruct.Mapper;
 
 @Mapper
 public interface UsuarioMapper {
     
-    Usuario toDomain(UsuarioEntity entity);
+    UsuarioModel toDomain(Usuario entity);
     
-    UsuarioEntity toEntity(Usuario domain);
+    Usuario toEntity(UsuarioModel domain);
 } 

@@ -1,6 +1,6 @@
 package com.vilelatech.rh.adapters.outbound.persistence.entity;
 
-import com.vilelatech.rh.domain.model.Status;
+import com.vilelatech.rh.domain.model.enums.Status;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ColaboradorEntity {
+public class Colaborador {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

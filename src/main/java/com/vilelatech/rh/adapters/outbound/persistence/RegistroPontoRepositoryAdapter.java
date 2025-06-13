@@ -2,7 +2,7 @@ package com.vilelatech.rh.adapters.outbound.persistence;
 
 import com.vilelatech.rh.application.mapper.RegistroPontoMapper;
 import com.vilelatech.rh.adapters.outbound.persistence.repository.RegistroPontoJpaRepository;
-import com.vilelatech.rh.domain.model.RegistroPonto;
+import com.vilelatech.rh.domain.model.RegistroPontoModel;
 import com.vilelatech.rh.ports.RegistroPontoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -20,27 +20,27 @@ public class RegistroPontoRepositoryAdapter implements RegistroPontoRepository {
     private final RegistroPontoMapper registroPontoMapper;
     
     @Override
-    public RegistroPonto save(RegistroPonto registroPonto) {
+    public RegistroPontoModel save(RegistroPontoModel registroPonto) {
         var entity = registroPontoMapper.toEntity(registroPonto);
         entity = registroPontoJpaRepository.save(entity);
         return registroPontoMapper.toDomain(entity);
     }
     
     @Override
-    public Optional<RegistroPonto> findById(Long id) {
+    public Optional<RegistroPontoModel> findById(Long id) {
         return registroPontoJpaRepository.findById(id)
                 .map(registroPontoMapper::toDomain);
     }
     
     @Override
-    public List<RegistroPonto> findByColaboradorId(Long colaboradorId) {
+    public List<RegistroPontoModel> findByColaboradorId(Long colaboradorId) {
         return registroPontoJpaRepository.findByColaboradorId(colaboradorId).stream()
                 .map(registroPontoMapper::toDomain)
                 .collect(Collectors.toList());
     }
     
     @Override
-    public List<RegistroPonto> findByColaboradorIdAndDataRegistroBetween(Long colaboradorId, LocalDate inicio, LocalDate fim) {
+    public List<RegistroPontoModel> findByColaboradorIdAndDataRegistroBetween(Long colaboradorId, LocalDate inicio, LocalDate fim) {
         return registroPontoJpaRepository.findByColaboradorIdAndDataRegistroBetween(colaboradorId, inicio, fim).stream()
                 .map(registroPontoMapper::toDomain)
                 .collect(Collectors.toList());

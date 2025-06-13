@@ -1,6 +1,6 @@
 package com.vilelatech.rh.adapters.outbound.persistence.entity;
 
-import com.vilelatech.rh.domain.model.TipoRegistro;
+import com.vilelatech.rh.domain.model.enums.TipoRegistro;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,7 +18,7 @@ import java.time.LocalTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RegistroPontoEntity {
+public class RegistroPonto {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

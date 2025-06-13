@@ -1,7 +1,7 @@
 package com.vilelatech.rh.application.mapper;
 
-import com.vilelatech.rh.adapters.outbound.persistence.entity.ColaboradorEntity;
-import com.vilelatech.rh.domain.model.Colaborador;
+import com.vilelatech.rh.adapters.outbound.persistence.entity.Colaborador;
+import com.vilelatech.rh.domain.model.ColaboradorModel;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -9,7 +9,7 @@ import org.mapstruct.Mapping;
 public interface ColaboradorMapper {
 
     @Mapping(target = "usuario", ignore = true)
-    Colaborador toDomain(ColaboradorEntity entity);
+    ColaboradorModel toDomain(Colaborador entity);
 
-    ColaboradorEntity toEntity(Colaborador domain);
+    Colaborador toEntity(ColaboradorModel domain);
 } 

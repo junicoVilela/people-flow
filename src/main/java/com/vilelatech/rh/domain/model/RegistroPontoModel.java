@@ -1,5 +1,6 @@
 package com.vilelatech.rh.domain.model;
 
+import com.vilelatech.rh.domain.model.enums.TipoRegistro;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,7 +15,7 @@ import java.time.LocalTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RegistroPonto {
+public class RegistroPontoModel {
     private Long id;
     private Long colaboradorId;
     private LocalDate dataRegistro;

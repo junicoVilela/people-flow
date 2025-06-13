@@ -5,10 +5,10 @@ import com.vilelatech.rh.application.dto.colaborador.ColaboradorRequest;
 import com.vilelatech.rh.application.dto.colaborador.ColaboradorResponse;
 import com.vilelatech.rh.application.dto.colaborador.ColaboradorUpdateRequest;
 import com.vilelatech.rh.application.dto.colaborador.InativacaoRequest;
-import com.vilelatech.rh.domain.model.Colaborador;
-import com.vilelatech.rh.domain.model.Role;
-import com.vilelatech.rh.domain.model.Status;
-import com.vilelatech.rh.domain.model.Usuario;
+import com.vilelatech.rh.domain.model.ColaboradorModel;
+import com.vilelatech.rh.domain.model.UsuarioModel;
+import com.vilelatech.rh.domain.model.enums.Role;
+import com.vilelatech.rh.domain.model.enums.Status;
 import com.vilelatech.rh.ports.ColaboradorRepository;
 import com.vilelatech.rh.ports.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
@@ -43,7 +43,7 @@ public class ColaboradorUseCase {
         }
 
         // Criar usuário
-        Usuario usuario = Usuario.builder()
+        UsuarioModel usuario = UsuarioModel.builder()
                 .nome(request.getNome())
                 .email(request.getEmail())
                 .senhaHash(passwordEncoder.encode(request.getSenha()))
@@ -56,14 +56,14 @@ public class ColaboradorUseCase {
         usuario = usuarioRepository.save(usuario);
 
         // Converter request para domínio e ajustar dados específicos
-        Colaborador colaborador = colaboradorDtoMapper.toDomain(request);
-        colaborador.setUsuarioId(usuario.getId());
-        colaborador.setStatus(Status.ATIVO);
-        colaborador.setDataCriacao(LocalDateTime.now());
-        colaborador.setDataAtualizacao(LocalDateTime.now());
-        colaborador.setUsuario(usuario);
+        ColaboradorModel colaboradorModel = colaboradorDtoMapper.toDomain(request);
+        colaboradorModel.setUsuarioId(usuario.getId());
+        colaboradorModel.setStatus(Status.ATIVO);
+        colaboradorModel.setDataCriacao(LocalDateTime.now());
+        colaboradorModel.setDataAtualizacao(LocalDateTime.now());
+        colaboradorModel.setUsuario(usuario);
 
-        colaboradorRepository.save(colaborador);
+        colaboradorRepository.save(colaboradorModel);
     }
 
     public List<ColaboradorResponse> listarTodos() {
@@ -82,7 +82,7 @@ public class ColaboradorUseCase {
         return colaboradorRepository.findAll(pageable)
                 .map(colaborador -> {
                     // Buscar dados do usuário para cada colaborador
-                    Usuario usuario = usuarioRepository.findById(colaborador.getUsuarioId())
+                    UsuarioModel usuario = usuarioRepository.findById(colaborador.getUsuarioId())
                             .orElse(null);
                     colaborador.setUsuario(usuario);
                     return colaboradorDtoMapper.toResponse(colaborador);
@@ -90,23 +90,23 @@ public class ColaboradorUseCase {
     }
 
     public ColaboradorResponse buscarPorId(Long id) {
-        Colaborador colaborador = colaboradorRepository.findById(id)
+        ColaboradorModel colaboradorModel = colaboradorRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Colaborador não encontrado"));
 
-        Usuario usuario = usuarioRepository.findById(colaborador.getUsuarioId())
+        UsuarioModel usuario = usuarioRepository.findById(colaboradorModel.getUsuarioId())
                 .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
 
-        colaborador.setUsuario(usuario);
+        colaboradorModel.setUsuario(usuario);
 
-        return colaboradorDtoMapper.toResponse(colaborador);
+        return colaboradorDtoMapper.toResponse(colaboradorModel);
     }
 
     @Transactional
     public void atualizar(Long id, ColaboradorUpdateRequest request) {
-        Colaborador colaborador = colaboradorRepository.findById(id)
+        ColaboradorModel colaboradorModel = colaboradorRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Colaborador não encontrado"));
 
-        Usuario usuario = usuarioRepository.findById(colaborador.getUsuarioId())
+        UsuarioModel usuario = usuarioRepository.findById(colaboradorModel.getUsuarioId())
                 .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
 
         // Atualizar dados do usuário
@@ -115,19 +115,19 @@ public class ColaboradorUseCase {
         usuarioRepository.save(usuario);
 
         // Atualizar dados do colaborador usando o mapper
-        colaboradorDtoMapper.updateDomainFromDto(request, colaborador);
-        colaborador.setDataAtualizacao(LocalDateTime.now());
-        colaborador.setUsuario(usuario);
+        colaboradorDtoMapper.updateDomainFromDto(request, colaboradorModel);
+        colaboradorModel.setDataAtualizacao(LocalDateTime.now());
+        colaboradorModel.setUsuario(usuario);
 
-        colaboradorRepository.save(colaborador);
+        colaboradorRepository.save(colaboradorModel);
     }
 
     @Transactional
     public void inativar(Long id, InativacaoRequest request) {
-        Colaborador colaborador = colaboradorRepository.findById(id)
+        ColaboradorModel colaboradorModel = colaboradorRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Colaborador não encontrado"));
 
-        Usuario usuario = usuarioRepository.findById(colaborador.getUsuarioId())
+        UsuarioModel usuario = usuarioRepository.findById(colaboradorModel.getUsuarioId())
                 .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
 
         // Inativar usuário
@@ -136,11 +136,11 @@ public class ColaboradorUseCase {
         usuarioRepository.save(usuario);
 
         // Inativar colaborador
-        colaborador.setStatus(Status.DESLIGADO);
-        colaborador.setDataDemissao(request.getDataDemissao());
-        colaborador.setDataAtualizacao(LocalDateTime.now());
-        colaborador.setUsuario(usuario);
+        colaboradorModel.setStatus(Status.DESLIGADO);
+        colaboradorModel.setDataDemissao(request.getDataDemissao());
+        colaboradorModel.setDataAtualizacao(LocalDateTime.now());
+        colaboradorModel.setUsuario(usuario);
 
-        colaboradorRepository.save(colaborador);
+        colaboradorRepository.save(colaboradorModel);
     }
 } 
