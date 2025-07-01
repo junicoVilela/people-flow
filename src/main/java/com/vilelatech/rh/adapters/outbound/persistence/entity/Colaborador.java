@@ -26,6 +26,10 @@ public class Colaborador {
     @Column(name = "usuario_id", nullable = false)
     private Long usuarioId;
     
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "usuario_id", insertable = false, updatable = false)
+    private Usuario usuario;
+    
     @Column(length = 14, unique = true, nullable = false)
     private String cpf;
     

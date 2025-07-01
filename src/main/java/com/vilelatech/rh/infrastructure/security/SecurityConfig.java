@@ -54,7 +54,7 @@ public class SecurityConfig {
     }
     
     /**
-     * PasswordEncoder que não criptografa - apenas para desenvolvimento/teste
+     * PasswordEncoder simples sem criptografia - para desenvolvimento/teste
      * Compara as senhas diretamente (plain text)
      */
     @Bean

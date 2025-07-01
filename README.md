@@ -122,16 +122,41 @@ src/main/java/com/vilelatech/rh/
 ## ✨ Funcionalidades
 
 ### 🔐 **Autenticação e Autorização**
-- Login com e-mail e senha
+- Login com e-mail e senha (texto plano para desenvolvimento)
 - Geração e validação de tokens JWT
 - Controle de acesso por perfil (`ADMIN`, `RH`, `COLABORADOR`)
+- CORS configurado adequadamente
 
 ### 👥 **Gestão de Colaboradores**
-- ✅ Cadastro de colaboradores
-- 📋 Listagem de colaboradores (todos/ativos)
-- 🔍 Visualização de detalhes
-- ✏️ Edição de dados
+- ✅ Cadastro de colaboradores com validação robusta
+- 📋 Listagem de colaboradores otimizada (todos/ativos)
+- 🔍 Visualização de detalhes (query otimizada)
+- ✏️ Edição de dados com validações
 - ❌ Inativação (demissão)
+
+## 🔧 **Melhorias Implementadas**
+
+### 🛡️ **Segurança**
+- **Password Encoder Simples**: Senhas em texto plano para desenvolvimento
+- **CORS Restritivo**: Apenas origens autorizadas
+- **Validação de Entrada**: Bean Validation em todos os DTOs
+
+### 🚨 **Tratamento de Exceções**
+- **GlobalExceptionHandler**: Tratamento centralizado e padronizado
+- **Exceções Específicas**: Substituição de `IllegalArgumentException`
+- **Respostas Estruturadas**: Formato RFC 7807 para erros
+- **Logging Apropriado**: Diferentes níveis por tipo de erro
+
+### ⚡ **Performance**
+- **JOIN FETCH**: Eliminação de queries N+1
+- **Queries Otimizadas**: Carregamento de dados relacionados em uma única consulta
+- **Lazy Loading**: Carregamento sob demanda quando apropriado
+
+### ✅ **Validações**
+- **Validação de CPF**: Formato e estrutura
+- **Validação de Email**: Formato válido
+- **Validação de Dados**: Campos obrigatórios e limites
+- **Mensagens Descritivas**: Feedback claro para o usuário
 
 ## 🛠️ Tecnologias Utilizadas
 
@@ -139,16 +164,19 @@ src/main/java/com/vilelatech/rh/
 - ☕ **Java 21** - Linguagem de programação
 - 🍃 **Spring Boot 3.2.5** - Framework principal
 - 🔒 **Spring Security** - Segurança e autenticação
-- 🗄️ **Spring Data JPA** - Persistência de dados
+- 🗄️ **Spring Data JPA** - Persistência de dados otimizada
 - 🎫 **JWT** - Tokens de autenticação
 - 🗃️ **H2 Database** - Banco em memória (desenvolvimento)
 - 🔧 **MapStruct** - Mapeamento automático entre objetos
 - 📝 **Lombok** - Redução de código boilerplate
+- ✅ **Bean Validation** - Validação de entrada robusta
 
 ### **Arquitetura**
 - 🏗️ **Hexagonal Architecture** (Ports & Adapters)
 - 🧹 **Clean Architecture** - Separação de responsabilidades
 - 📦 **Domain-Driven Design** - Organização por contextos de negócio
+- 🚨 **Tratamento Global de Exceções** - Respostas padronizadas
+- ⚡ **Otimizações de Performance** - JOIN FETCH para evitar N+1
 
 ## 🚀 Como Executar
 
@@ -165,4 +193,74 @@ src/main/java/com/vilelatech/rh/
    ```
 
 2. **Compile e execute**
+   ```bash
+   ./mvnw spring-boot:run
    ```
+
+3. **Acesse a aplicação**
+   - **API**: http://localhost:8080
+   - **H2 Console**: http://localhost:8080/h2-console
+   - **Documentação**: Swagger UI (se habilitado)
+
+### 🧪 **Testando as Melhorias**
+
+#### **Usuários de Teste** (senha: `123456`)
+- **Admin**: `admin@empresa.com` 
+- **RH**: `rh@empresa.com`
+- **Colaborador**: `joao.silva@empresa.com`
+
+#### **Endpoints Principais**
+```bash
+# Login
+POST /api/auth/login
+{
+  "email": "admin@empresa.com",
+  "password": "123456"
+}
+
+# Criar colaborador (requer token)
+POST /api/colaboradores
+{
+  "nome": "João Silva",
+  "email": "novo@empresa.com",
+  "senha": "123456",
+  "cpf": "12345678901",
+  "dataNascimento": "1990-01-01",
+  "cargo": "Desenvolvedor",
+  "departamento": "TI",
+  "salario": 5000.00,
+  "dataAdmissao": "2024-01-01"
+}
+
+# Listar colaboradores (com paginação otimizada)
+GET /api/colaboradores?page=0&size=10
+
+# Buscar por ID (query otimizada)
+GET /api/colaboradores/1
+```
+
+#### **Testando Validações**
+```bash
+# Dados inválidos retornarão erro estruturado
+POST /api/colaboradores
+{
+  "nome": "A",           # Muito curto
+  "email": "email-invalido", # Formato inválido
+  "cpf": "123",          # CPF inválido
+  "salario": -100        # Valor negativo
+}
+```
+
+#### **Testando Exceções**
+```bash
+# Entidade não encontrada
+GET /api/colaboradores/999
+
+# Resposta estruturada:
+{
+  "timestamp": "2024-01-01T10:00:00",
+  "status": 404,
+  "error": "Entidade não encontrada",
+  "message": "Colaborador com ID 999 não foi encontrado(a)"
+}
+```

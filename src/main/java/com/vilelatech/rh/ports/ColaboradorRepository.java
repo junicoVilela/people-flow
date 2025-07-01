@@ -16,4 +16,8 @@ public interface ColaboradorRepository {
     Page<ColaboradorModel> findAll(Pageable pageable);
     List<ColaboradorModel> findByStatus(Status status);
     boolean existsByCpf(String cpf);
+    
+    // Métodos otimizados com JOIN FETCH
+    Page<ColaboradorModel> findAllWithUsuario(Pageable pageable);
+    Optional<ColaboradorModel> findByIdWithUsuario(Long id);
 } 

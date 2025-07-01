@@ -5,6 +5,8 @@ import com.vilelatech.rh.application.dto.colaborador.ColaboradorRequest;
 import com.vilelatech.rh.application.dto.colaborador.ColaboradorResponse;
 import com.vilelatech.rh.application.dto.colaborador.ColaboradorUpdateRequest;
 import com.vilelatech.rh.application.dto.colaborador.InativacaoRequest;
+import com.vilelatech.rh.application.exception.EntidadeNaoEncontradaException;
+import com.vilelatech.rh.application.exception.NegocioException;
 import com.vilelatech.rh.domain.model.ColaboradorModel;
 import com.vilelatech.rh.domain.model.UsuarioModel;
 import com.vilelatech.rh.domain.model.enums.Role;
@@ -34,12 +36,12 @@ public class ColaboradorUseCase {
     public void cadastrar(ColaboradorRequest request) {
         // Validar se email já existe
         if (usuarioRepository.existsByEmail(request.getEmail())) {
-            throw new IllegalArgumentException("Email já cadastrado");
+            throw new NegocioException("Email já cadastrado: " + request.getEmail());
         }
 
         // Validar se CPF já existe
         if (colaboradorRepository.existsByCpf(request.getCpf())) {
-            throw new IllegalArgumentException("CPF já cadastrado");
+            throw new NegocioException("CPF já cadastrado: " + request.getCpf());
         }
 
         // Criar usuário
@@ -79,24 +81,15 @@ public class ColaboradorUseCase {
     }
 
     public Page<ColaboradorResponse> listar(Pageable pageable) {
-        return colaboradorRepository.findAll(pageable)
-                .map(colaborador -> {
-                    // Buscar dados do usuário para cada colaborador
-                    UsuarioModel usuario = usuarioRepository.findById(colaborador.getUsuarioId())
-                            .orElse(null);
-                    colaborador.setUsuario(usuario);
-                    return colaboradorDtoMapper.toResponse(colaborador);
-                });
+        // Utiliza JOIN FETCH para carregar colaboradores e usuários em uma única query
+        return colaboradorRepository.findAllWithUsuario(pageable)
+                .map(colaboradorDtoMapper::toResponse);
     }
 
     public ColaboradorResponse buscarPorId(Long id) {
-        ColaboradorModel colaboradorModel = colaboradorRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Colaborador não encontrado"));
-
-        UsuarioModel usuario = usuarioRepository.findById(colaboradorModel.getUsuarioId())
-                .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
-
-        colaboradorModel.setUsuario(usuario);
+        // Utiliza JOIN FETCH para carregar colaborador e usuário em uma única query
+        ColaboradorModel colaboradorModel = colaboradorRepository.findByIdWithUsuario(id)
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Colaborador", id));
 
         return colaboradorDtoMapper.toResponse(colaboradorModel);
     }
@@ -104,10 +97,10 @@ public class ColaboradorUseCase {
     @Transactional
     public void atualizar(Long id, ColaboradorUpdateRequest request) {
         ColaboradorModel colaboradorModel = colaboradorRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Colaborador não encontrado"));
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Colaborador", id));
 
         UsuarioModel usuario = usuarioRepository.findById(colaboradorModel.getUsuarioId())
-                .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Usuario", colaboradorModel.getUsuarioId()));
 
         // Atualizar dados do usuário
         usuario.setNome(request.getNome());
@@ -125,10 +118,10 @@ public class ColaboradorUseCase {
     @Transactional
     public void inativar(Long id, InativacaoRequest request) {
         ColaboradorModel colaboradorModel = colaboradorRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Colaborador não encontrado"));
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Colaborador", id));
 
         UsuarioModel usuario = usuarioRepository.findById(colaboradorModel.getUsuarioId())
-                .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Usuario", colaboradorModel.getUsuarioId()));
 
         // Inativar usuário
         usuario.setAtivo(false);

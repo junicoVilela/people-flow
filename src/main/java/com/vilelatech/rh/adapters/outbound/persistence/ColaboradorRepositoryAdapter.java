@@ -64,4 +64,20 @@ public class ColaboradorRepositoryAdapter implements ColaboradorRepository {
     public boolean existsByCpf(String cpf) {
         return colaboradorJpaRepository.existsByCpf(cpf);
     }
+    
+    /**
+     * Busca paginada otimizada com JOIN FETCH para evitar N+1
+     */
+    public Page<ColaboradorModel> findAllWithUsuario(Pageable pageable) {
+        return colaboradorJpaRepository.findAllWithUsuario(pageable)
+                .map(colaboradorMapper::toDomain);
+    }
+    
+    /**
+     * Busca por ID otimizada com JOIN FETCH
+     */
+    public Optional<ColaboradorModel> findByIdWithUsuario(Long id) {
+        return colaboradorJpaRepository.findByIdWithUsuario(id)
+                .map(colaboradorMapper::toDomain);
+    }
 } 

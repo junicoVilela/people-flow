@@ -10,6 +10,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMethod;
+import jakarta.validation.Valid;
 
 /**
  * Controller REST para operações de colaboradores.
@@ -17,7 +19,11 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/api/colaboradores")
-@CrossOrigin(origins = "*")
+@CrossOrigin(
+    origins = {"http://localhost:3000", "http://localhost:8080"},
+    methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.PATCH},
+    allowedHeaders = {"Authorization", "Content-Type"}
+)
 public class ColaboradorController {
     
     private final ColaboradorUseCase colaboradorUseCase;
@@ -33,7 +39,7 @@ public class ColaboradorController {
      * @return colaborador criado
      */
     @PostMapping
-    public ResponseEntity<Void> criar(@RequestBody ColaboradorRequest request) {
+    public ResponseEntity<Void> criar(@Valid @RequestBody ColaboradorRequest request) {
         colaboradorUseCase.cadastrar(request);
         return ResponseEntity.noContent().build();
     }
@@ -74,7 +80,7 @@ public class ColaboradorController {
     @PutMapping("/{id}")
     public ResponseEntity<Void> atualizar(
             @PathVariable Long id, 
-            @RequestBody ColaboradorUpdateRequest request) {
+            @Valid @RequestBody ColaboradorUpdateRequest request) {
 
         colaboradorUseCase.atualizar(id, request);
         return ResponseEntity.noContent().build();
