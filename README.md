@@ -119,44 +119,6 @@ src/main/java/com/vilelatech/rh/
 - **🎯 Nomenclatura Explícita**: `inbound/outbound` mais clara que `in/out`
 - **📋 Separação Clara**: Validações críticas no domínio, validações de aplicação em `common`
 
-## ✨ Funcionalidades
-
-### 🔐 **Autenticação e Autorização**
-- Login com e-mail e senha (texto plano para desenvolvimento)
-- Geração e validação de tokens JWT
-- Controle de acesso por perfil (`ADMIN`, `RH`, `COLABORADOR`)
-- CORS configurado adequadamente
-
-### 👥 **Gestão de Colaboradores**
-- ✅ Cadastro de colaboradores com validação robusta
-- 📋 Listagem de colaboradores otimizada (todos/ativos)
-- 🔍 Visualização de detalhes (query otimizada)
-- ✏️ Edição de dados com validações
-- ❌ Inativação (demissão)
-
-## 🔧 **Melhorias Implementadas**
-
-### 🛡️ **Segurança**
-- **Password Encoder Simples**: Senhas em texto plano para desenvolvimento
-- **CORS Restritivo**: Apenas origens autorizadas
-- **Validação de Entrada**: Bean Validation em todos os DTOs
-
-### 🚨 **Tratamento de Exceções**
-- **GlobalExceptionHandler**: Tratamento centralizado e padronizado
-- **Exceções Específicas**: Substituição de `IllegalArgumentException`
-- **Respostas Estruturadas**: Formato RFC 7807 para erros
-- **Logging Apropriado**: Diferentes níveis por tipo de erro
-
-### ⚡ **Performance**
-- **JOIN FETCH**: Eliminação de queries N+1
-- **Queries Otimizadas**: Carregamento de dados relacionados em uma única consulta
-- **Lazy Loading**: Carregamento sob demanda quando apropriado
-
-### ✅ **Validações**
-- **Validação de CPF**: Formato e estrutura
-- **Validação de Email**: Formato válido
-- **Validação de Dados**: Campos obrigatórios e limites
-- **Mensagens Descritivas**: Feedback claro para o usuário
 
 ## 🛠️ Tecnologias Utilizadas
 
