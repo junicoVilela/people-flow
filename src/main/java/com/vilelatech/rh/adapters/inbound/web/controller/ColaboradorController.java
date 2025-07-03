@@ -19,11 +19,6 @@ import jakarta.validation.Valid;
  */
 @RestController
 @RequestMapping("/api/colaboradores")
-@CrossOrigin(
-    origins = {"http://localhost:3000", "http://localhost:8080"},
-    methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.PATCH},
-    allowedHeaders = {"Authorization", "Content-Type"}
-)
 public class ColaboradorController {
     
     private final ColaboradorUseCase colaboradorUseCase;
@@ -51,7 +46,7 @@ public class ColaboradorController {
      * @return dados do colaborador
      */
     @GetMapping("/{id}")
-    public ResponseEntity<ColaboradorResponse> buscarPorId(@PathVariable Long id) {
+    public ResponseEntity<ColaboradorResponse> buscarPorId(@PathVariable("id") Long id) {
 
         ColaboradorResponse response = colaboradorUseCase.buscarPorId(id);
         return ResponseEntity.ok(response);
@@ -79,7 +74,7 @@ public class ColaboradorController {
      */
     @PutMapping("/{id}")
     public ResponseEntity<Void> atualizar(
-            @PathVariable Long id, 
+            @PathVariable("id") Long id, 
             @Valid @RequestBody ColaboradorUpdateRequest request) {
 
         colaboradorUseCase.atualizar(id, request);
@@ -95,7 +90,7 @@ public class ColaboradorController {
      */
     @PatchMapping("/{id}/inativar")
     public ResponseEntity<Void> inativar(
-            @PathVariable Long id, 
+            @PathVariable("id") Long id, 
             @RequestBody InativacaoRequest request) {
 
         colaboradorUseCase.inativar(id, request);

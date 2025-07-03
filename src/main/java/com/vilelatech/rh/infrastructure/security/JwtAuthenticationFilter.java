@@ -71,7 +71,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         return path.startsWith("/api/auth") || 
                path.startsWith("/h2-console") ||
                path.startsWith("/swagger-ui") ||
-               path.startsWith("/v3/api-docs");
+               path.startsWith("/v3/api-docs") ||
+               // Endpoints temporariamente abertos (sem backend implementado)
+               path.startsWith("/api/categories") ||
+               path.startsWith("/api/entries") ||
+               path.startsWith("/api/reports");
     }
     
     private String getJwtFromRequest(HttpServletRequest request) {
@@ -91,4 +95,4 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 Collections.singleton(() -> "ROLE_" + usuario.getRole().name())
         );
     }
-} 
+}

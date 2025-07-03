@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.cors.CorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity
@@ -23,18 +24,24 @@ public class SecurityConfig {
     
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private final CorsConfigurationSource corsConfigurationSource;
     
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
+                .cors(cors -> cors.configurationSource(corsConfigurationSource))
                 .authorizeHttpRequests(auth -> auth
                         // Endpoints públicos
                         .requestMatchers(
                             new AntPathRequestMatcher("/api/auth/**"),
                             new AntPathRequestMatcher("/h2-console/**"),
                             new AntPathRequestMatcher("/swagger-ui/**"),
-                            new AntPathRequestMatcher("/v3/api-docs/**")
+                            new AntPathRequestMatcher("/v3/api-docs/**"),
+                            // Endpoints temporariamente abertos (sem backend implementado)
+                            new AntPathRequestMatcher("/api/categories/**"),
+                            new AntPathRequestMatcher("/api/entries/**"),
+                            new AntPathRequestMatcher("/api/reports/**")
                         ).permitAll()
                         
                         // Endpoint de colaboradores - apenas perfis ADMIN e RH
@@ -78,4 +85,4 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
-} 
+}
