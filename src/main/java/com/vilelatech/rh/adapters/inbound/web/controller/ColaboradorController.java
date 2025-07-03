@@ -96,4 +96,16 @@ public class ColaboradorController {
         colaboradorUseCase.inativar(id, request);
         return ResponseEntity.noContent().build();
     }
+    
+    /**
+     * Endpoint para excluir um colaborador.
+     * 
+     * @param id ID do colaborador
+     * @return confirmação de exclusão
+     */
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> excluir(@PathVariable("id") Long id) {
+        colaboradorUseCase.excluir(id);
+        return ResponseEntity.noContent().build();
+    }
 } 

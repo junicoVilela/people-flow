@@ -136,4 +136,16 @@ public class ColaboradorUseCase {
 
         colaboradorRepository.save(colaboradorModel);
     }
+    
+        @Transactional
+    public void excluir(Long id) {
+        ColaboradorModel colaboradorModel = colaboradorRepository.findById(id)
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Colaborador", id));
+        
+        colaboradorRepository.delete(colaboradorModel);
+        
+        if (colaboradorModel.getUsuarioId() != null) {
+            usuarioRepository.deleteById(colaboradorModel.getUsuarioId());
+        }
+    }
 } 

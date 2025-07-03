@@ -9,4 +9,5 @@ public interface UsuarioRepository {
     Optional<UsuarioModel> findById(Long id);
     Optional<UsuarioModel> findByEmail(String email);
     boolean existsByEmail(String email);
+    void deleteById(Long id);
 } 

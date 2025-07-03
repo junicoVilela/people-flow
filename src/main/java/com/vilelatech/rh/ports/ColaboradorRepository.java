@@ -20,4 +20,6 @@ public interface ColaboradorRepository {
     // Métodos otimizados com JOIN FETCH
     Page<ColaboradorModel> findAllWithUsuario(Pageable pageable);
     Optional<ColaboradorModel> findByIdWithUsuario(Long id);
+
+    void delete(ColaboradorModel colaboradorModel);
 } 

@@ -39,4 +39,9 @@ public class UsuarioRepositoryAdapter implements UsuarioRepository {
     public boolean existsByEmail(String email) {
         return usuarioJpaRepository.existsByEmail(email);
     }
+    
+    @Override
+    public void deleteById(Long id) {
+        usuarioJpaRepository.deleteById(id);
+    }
 } 
