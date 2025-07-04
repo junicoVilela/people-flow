@@ -3,13 +3,12 @@ package com.vilelatech.rh.adapters.outbound.persistence;
 import com.vilelatech.rh.application.mapper.ColaboradorMapper;
 import com.vilelatech.rh.adapters.outbound.persistence.repository.ColaboradorJpaRepository;
 import com.vilelatech.rh.domain.model.ColaboradorModel;
-import com.vilelatech.rh.domain.model.enums.Status;
+import com.vilelatech.rh.domain.model.enums.StatusColaborador;
 import com.vilelatech.rh.ports.ColaboradorRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
-
 
 import java.util.List;
 import java.util.Optional;
@@ -36,7 +35,7 @@ public class ColaboradorRepositoryAdapter implements ColaboradorRepository {
     }
     
     @Override
-    public List<ColaboradorModel> findByStatus(Status status) {
+    public List<ColaboradorModel> findByStatus(StatusColaborador status) {
         return colaboradorJpaRepository.findByStatus(status).stream()
                 .map(colaboradorMapper::toDomain)
                 .collect(Collectors.toList());

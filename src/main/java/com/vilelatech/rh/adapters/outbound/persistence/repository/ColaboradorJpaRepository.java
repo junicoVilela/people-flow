@@ -1,7 +1,7 @@
 package com.vilelatech.rh.adapters.outbound.persistence.repository;
 
 import com.vilelatech.rh.adapters.outbound.persistence.entity.Colaborador;
-import com.vilelatech.rh.domain.model.enums.Status;
+import com.vilelatech.rh.domain.model.enums.StatusColaborador;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @Repository
 public interface ColaboradorJpaRepository extends JpaRepository<Colaborador, Long> {
-    List<Colaborador> findByStatus(Status status);
+    List<Colaborador> findByStatus(StatusColaborador status);
     
     boolean existsByCpf(String cpf);
 

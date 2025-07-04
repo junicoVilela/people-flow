@@ -1,6 +1,6 @@
 package com.vilelatech.rh.adapters.outbound.persistence.entity;
 
-import com.vilelatech.rh.domain.model.enums.Status;
+import com.vilelatech.rh.domain.model.enums.StatusColaborador;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,58 +21,59 @@ public class Colaborador {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
     private Long id;
     
-    @Column(length = 14, unique = true, nullable = false)
+    @Column(name = "CPF", length = 14, unique = true, nullable = false)
     private String cpf;
     
-    @Column(length = 20)
+    @Column(name = "RG", length = 20)
     private String rg;
     
-    @Column(name = "data_nascimento")
+    @Column(name = "DATA_NASCIMENTO")
     private LocalDate dataNascimento;
     
-    @Column(length = 10)
+    @Column(name = "SEXO", length = 10)
     private String sexo;
     
-    @Column(length = 20)
+    @Column(name = "TELEFONE", length = 20)
     private String telefone;
     
-    @Column(name = "estado_civil", length = 20)
+    @Column(name = "ESTADO_CIVIL", length = 20)
     private String estadoCivil;
     
-    @Column(columnDefinition = "TEXT")
+    @Column(name = "ENDERECO", columnDefinition = "TEXT")
     private String endereco;
     
-    @Column(length = 100)
+    @Column(name = "CARGO", length = 100)
     private String cargo;
     
-    @Column(length = 100)
+    @Column(name = "DEPARTAMENTO", length = 100)
     private String departamento;
     
-    @Column(precision = 10, scale = 2)
+    @Column(name = "SALARIO", precision = 10, scale = 2)
     private BigDecimal salario;
     
-    @Column(name = "data_admissao")
+    @Column(name = "DATA_ADMISSAO")
     private LocalDate dataAdmissao;
     
-    @Column(name = "data_demissao")
+    @Column(name = "DATA_DEMISSAO")
     private LocalDate dataDemissao;
     
     @Enumerated(EnumType.STRING)
-    @Column(length = 20)
-    private Status status;
+    @Column(name = "STATUS", length = 20)
+    private StatusColaborador status;
     
-    @Column(name = "data_criacao", nullable = false)
+    @Column(name = "DATA_CRIACAO", nullable = false)
     private LocalDateTime dataCriacao;
     
-    @Column(name = "data_atualizacao", nullable = false)
+    @Column(name = "DATA_ATUALIZACAO", nullable = false)
     private LocalDateTime dataAtualizacao;
 
-    @Column(name = "usuario_id", nullable = false)
+    @Column(name = "USUARIO_ID", nullable = false)
     private Long usuarioId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "usuario_id", insertable = false, updatable = false)
+    @JoinColumn(name = "USUARIO_ID", insertable = false, updatable = false)
     private Usuario usuario;
 } 

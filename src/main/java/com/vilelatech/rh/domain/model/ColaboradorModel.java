@@ -1,6 +1,6 @@
 package com.vilelatech.rh.domain.model;
 
-import com.vilelatech.rh.domain.model.enums.Status;
+import com.vilelatech.rh.domain.model.enums.StatusColaborador;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -29,7 +29,7 @@ public class ColaboradorModel {
     private BigDecimal salario;
     private LocalDate dataAdmissao;
     private LocalDate dataDemissao;
-    private Status status;
+    private StatusColaborador status;
     private LocalDateTime dataCriacao;
     private LocalDateTime dataAtualizacao;
 

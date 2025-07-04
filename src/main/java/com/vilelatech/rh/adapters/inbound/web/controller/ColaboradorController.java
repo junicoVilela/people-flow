@@ -5,18 +5,12 @@ import com.vilelatech.rh.application.dto.colaborador.ColaboradorResponse;
 import com.vilelatech.rh.application.dto.colaborador.ColaboradorUpdateRequest;
 import com.vilelatech.rh.application.dto.colaborador.InativacaoRequest;
 import com.vilelatech.rh.application.usecase.colaborador.ColaboradorUseCase;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.RequestMethod;
-import jakarta.validation.Valid;
 
-/**
- * Controller REST para operações de colaboradores.
- * Adapter de entrada para casos de uso de colaborador.
- */
 @RestController
 @RequestMapping("/api/colaboradores")
 public class ColaboradorController {

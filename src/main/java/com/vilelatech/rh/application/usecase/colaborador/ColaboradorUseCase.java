@@ -10,7 +10,7 @@ import com.vilelatech.rh.application.exception.NegocioException;
 import com.vilelatech.rh.domain.model.ColaboradorModel;
 import com.vilelatech.rh.domain.model.UsuarioModel;
 import com.vilelatech.rh.domain.model.enums.Role;
-import com.vilelatech.rh.domain.model.enums.Status;
+import com.vilelatech.rh.domain.model.enums.StatusColaborador;
 import com.vilelatech.rh.ports.ColaboradorRepository;
 import com.vilelatech.rh.ports.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
@@ -56,7 +56,7 @@ public class ColaboradorUseCase {
 
         ColaboradorModel colaboradorModel = colaboradorDtoMapper.toDomain(request);
         colaboradorModel.setUsuarioId(usuario.getId());
-        colaboradorModel.setStatus(Status.ATIVO);
+        colaboradorModel.setStatus(StatusColaborador.ATIVO);
         colaboradorModel.setDataCriacao(LocalDateTime.now());
         colaboradorModel.setDataAtualizacao(LocalDateTime.now());
         colaboradorModel.setUsuario(usuario);
@@ -65,7 +65,7 @@ public class ColaboradorUseCase {
     }
 
     public List<ColaboradorResponse> listarAtivos() {
-        return colaboradorRepository.findByStatus(Status.ATIVO).stream()
+        return colaboradorRepository.findByStatus(StatusColaborador.ATIVO).stream()
                 .map(colaboradorDtoMapper::toResponse)
                 .collect(Collectors.toList());
     }
@@ -117,7 +117,7 @@ public class ColaboradorUseCase {
         usuarioRepository.save(usuario);
 
         // Inativar colaborador
-        colaboradorModel.setStatus(Status.DESLIGADO);
+        colaboradorModel.setStatus(StatusColaborador.DESLIGADO);
         colaboradorModel.setDataDemissao(request.getDataDemissao());
         colaboradorModel.setDataAtualizacao(LocalDateTime.now());
         colaboradorModel.setUsuario(usuario);

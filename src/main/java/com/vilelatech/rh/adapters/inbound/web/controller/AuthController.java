@@ -6,10 +6,6 @@ import com.vilelatech.rh.application.usecase.auth.AuthUseCase;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-/**
- * Controller REST para operações de autenticação.
- * Adapter de entrada para casos de uso de autenticação.
- */
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {

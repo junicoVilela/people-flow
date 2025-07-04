@@ -19,27 +19,28 @@ public class Usuario {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
     private Long id;
     
-    @Column(length = 100, nullable = false)
+    @Column(name = "NOME", length = 100, nullable = false)
     private String nome;
     
-    @Column(length = 100, nullable = false, unique = true)
+    @Column(name = "EMAIL", length = 100, nullable = false, unique = true)
     private String email;
     
-    @Column(name = "senha_hash", length = 255, nullable = false)
+    @Column(name = "SENHA_HASH", length = 255, nullable = false)
     private String senhaHash;
     
     @Enumerated(EnumType.STRING)
-    @Column(length = 20, nullable = false)
+    @Column(name = "ROLE", length = 20, nullable = false)
     private Role role;
     
-    @Column(nullable = false)
-    private boolean ativo;
+    @Column(name = "ATIVO", nullable = false)
+    private Boolean ativo;
     
-    @Column(name = "data_criacao", nullable = false)
+    @Column(name = "DATA_CRIACAO", nullable = false)
     private LocalDateTime dataCriacao;
     
-    @Column(name = "data_atualizacao", nullable = false)
+    @Column(name = "DATA_ATUALIZACAO", nullable = false)
     private LocalDateTime dataAtualizacao;
 } 
