@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -31,25 +32,6 @@ public class ColaboradorRepositoryAdapter implements ColaboradorRepository {
     @Override
     public Optional<ColaboradorModel> findById(Long id) {
         return colaboradorJpaRepository.findById(id)
-                .map(colaboradorMapper::toDomain);
-    }
-    
-    @Override
-    public Optional<ColaboradorModel> findByUsuarioId(Long usuarioId) {
-        return colaboradorJpaRepository.findByUsuarioId(usuarioId)
-                .map(colaboradorMapper::toDomain);
-    }
-    
-    @Override
-    public List<ColaboradorModel> findAll() {
-        return colaboradorJpaRepository.findAll().stream()
-                .map(colaboradorMapper::toDomain)
-                .collect(Collectors.toList());
-    }
-    
-    @Override
-    public Page<ColaboradorModel> findAll(Pageable pageable) {
-        return colaboradorJpaRepository.findAll(pageable)
                 .map(colaboradorMapper::toDomain);
     }
     

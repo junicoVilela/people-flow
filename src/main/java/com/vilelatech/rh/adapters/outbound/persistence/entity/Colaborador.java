@@ -23,13 +23,6 @@ public class Colaborador {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    @Column(name = "usuario_id", nullable = false)
-    private Long usuarioId;
-    
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "usuario_id", insertable = false, updatable = false)
-    private Usuario usuario;
-    
     @Column(length = 14, unique = true, nullable = false)
     private String cpf;
     
@@ -75,4 +68,11 @@ public class Colaborador {
     
     @Column(name = "data_atualizacao", nullable = false)
     private LocalDateTime dataAtualizacao;
+
+    @Column(name = "usuario_id", nullable = false)
+    private Long usuarioId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "usuario_id", insertable = false, updatable = false)
+    private Usuario usuario;
 } 

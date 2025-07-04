@@ -34,17 +34,14 @@ public class ColaboradorUseCase {
 
     @Transactional
     public void cadastrar(ColaboradorRequest request) {
-        // Validar se email já existe
         if (usuarioRepository.existsByEmail(request.getEmail())) {
             throw new NegocioException("Email já cadastrado: " + request.getEmail());
         }
 
-        // Validar se CPF já existe
         if (colaboradorRepository.existsByCpf(request.getCpf())) {
             throw new NegocioException("CPF já cadastrado: " + request.getCpf());
         }
 
-        // Criar usuário
         UsuarioModel usuario = UsuarioModel.builder()
                 .nome(request.getNome())
                 .email(request.getEmail())
@@ -57,7 +54,6 @@ public class ColaboradorUseCase {
 
         usuario = usuarioRepository.save(usuario);
 
-        // Converter request para domínio e ajustar dados específicos
         ColaboradorModel colaboradorModel = colaboradorDtoMapper.toDomain(request);
         colaboradorModel.setUsuarioId(usuario.getId());
         colaboradorModel.setStatus(Status.ATIVO);
@@ -68,12 +64,6 @@ public class ColaboradorUseCase {
         colaboradorRepository.save(colaboradorModel);
     }
 
-    public List<ColaboradorResponse> listarTodos() {
-        return colaboradorRepository.findAll().stream()
-                .map(colaboradorDtoMapper::toResponse)
-                .collect(Collectors.toList());
-    }
-
     public List<ColaboradorResponse> listarAtivos() {
         return colaboradorRepository.findByStatus(Status.ATIVO).stream()
                 .map(colaboradorDtoMapper::toResponse)
@@ -81,13 +71,11 @@ public class ColaboradorUseCase {
     }
 
     public Page<ColaboradorResponse> listar(Pageable pageable) {
-        // Utiliza JOIN FETCH para carregar colaboradores e usuários em uma única query
         return colaboradorRepository.findAllWithUsuario(pageable)
                 .map(colaboradorDtoMapper::toResponse);
     }
 
     public ColaboradorResponse buscarPorId(Long id) {
-        // Utiliza JOIN FETCH para carregar colaborador e usuário em uma única query
         ColaboradorModel colaboradorModel = colaboradorRepository.findByIdWithUsuario(id)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Colaborador", id));
 
@@ -137,7 +125,7 @@ public class ColaboradorUseCase {
         colaboradorRepository.save(colaboradorModel);
     }
     
-        @Transactional
+    @Transactional
     public void excluir(Long id) {
         ColaboradorModel colaboradorModel = colaboradorRepository.findById(id)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Colaborador", id));

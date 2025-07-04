@@ -13,23 +13,13 @@ import java.util.Optional;
 
 @Repository
 public interface ColaboradorJpaRepository extends JpaRepository<Colaborador, Long> {
-    
-    Optional<Colaborador> findByUsuarioId(Long usuarioId);
-    
     List<Colaborador> findByStatus(Status status);
     
     boolean existsByCpf(String cpf);
-    
-    /**
-     * Busca paginada de colaboradores com JOIN FETCH para evitar N+1
-     * Carrega os dados do usuário em uma única query
-     */
+
     @Query("SELECT c FROM Colaborador c JOIN FETCH c.usuario u ORDER BY c.id")
     Page<Colaborador> findAllWithUsuario(Pageable pageable);
-    
-    /**
-     * Busca colaborador por ID com JOIN FETCH
-     */
+
     @Query("SELECT c FROM Colaborador c JOIN FETCH c.usuario u WHERE c.id = :id")
     Optional<Colaborador> findByIdWithUsuario(Long id);
 } 

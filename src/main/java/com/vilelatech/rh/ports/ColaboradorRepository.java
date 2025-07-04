@@ -11,9 +11,6 @@ import java.util.Optional;
 public interface ColaboradorRepository {
     ColaboradorModel save(ColaboradorModel colaboradorModel);
     Optional<ColaboradorModel> findById(Long id);
-    Optional<ColaboradorModel> findByUsuarioId(Long usuarioId);
-    List<ColaboradorModel> findAll();
-    Page<ColaboradorModel> findAll(Pageable pageable);
     List<ColaboradorModel> findByStatus(Status status);
     boolean existsByCpf(String cpf);
     
