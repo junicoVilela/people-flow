@@ -42,25 +42,13 @@ public class ColaboradorUseCase {
             throw new NegocioException("CPF já cadastrado: " + request.getCpf());
         }
 
-        UsuarioModel usuario = UsuarioModel.builder()
-                .nome(request.getNome())
-                .email(request.getEmail())
-                .senhaHash(passwordEncoder.encode(request.getSenha()))
-                .role(Role.COLABORADOR)
-                .ativo(true)
-                .dataCriacao(LocalDateTime.now())
-                .dataAtualizacao(LocalDateTime.now())
-                .build();
-
+        UsuarioModel usuario = colaboradorDtoMapper.toUsuarioModel(request);
         usuario = usuarioRepository.save(usuario);
 
         ColaboradorModel colaboradorModel = colaboradorDtoMapper.toDomain(request);
         colaboradorModel.setUsuarioId(usuario.getId());
-        colaboradorModel.setStatus(StatusColaborador.ATIVO);
-        colaboradorModel.setDataCriacao(LocalDateTime.now());
-        colaboradorModel.setDataAtualizacao(LocalDateTime.now());
         colaboradorModel.setUsuario(usuario);
-
+        
         colaboradorRepository.save(colaboradorModel);
     }
 
@@ -90,16 +78,10 @@ public class ColaboradorUseCase {
         UsuarioModel usuario = usuarioRepository.findById(colaboradorModel.getUsuarioId())
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Usuario", colaboradorModel.getUsuarioId()));
 
-        // Atualizar dados do usuário
-        usuario.setNome(request.getNome());
-        usuario.setDataAtualizacao(LocalDateTime.now());
-        usuarioRepository.save(usuario);
-
-        // Atualizar dados do colaborador usando o mapper
-        colaboradorDtoMapper.updateDomainFromDto(request, colaboradorModel);
-        colaboradorModel.setDataAtualizacao(LocalDateTime.now());
         colaboradorModel.setUsuario(usuario);
+        colaboradorDtoMapper.updateColaborador(request, colaboradorModel);
 
+        usuarioRepository.save(colaboradorModel.getUsuario());
         colaboradorRepository.save(colaboradorModel);
     }
 

@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/colaboradores")
+@RequestMapping("/api/departamentos")
 public class DepartamentoController {
 
     private final ColaboradorUseCase colaboradorUseCase;
