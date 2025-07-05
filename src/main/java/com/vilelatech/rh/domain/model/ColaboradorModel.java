@@ -16,7 +16,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class ColaboradorModel {
     private Long id;
-    private Long usuarioId;
     private String cpf;
     private String rg;
     private LocalDate dataNascimento;
@@ -33,5 +32,6 @@ public class ColaboradorModel {
     private LocalDateTime dataCriacao;
     private LocalDateTime dataAtualizacao;
 
+    private Long usuarioId;
     private UsuarioModel usuario;
 } 

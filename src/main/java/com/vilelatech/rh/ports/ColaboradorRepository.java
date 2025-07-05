@@ -13,10 +13,7 @@ public interface ColaboradorRepository {
     Optional<ColaboradorModel> findById(Long id);
     List<ColaboradorModel> findByStatus(StatusColaborador status);
     boolean existsByCpf(String cpf);
-    
-    // Métodos otimizados com JOIN FETCH
     Page<ColaboradorModel> findAllWithUsuario(Pageable pageable);
     Optional<ColaboradorModel> findByIdWithUsuario(Long id);
-
     void delete(ColaboradorModel colaboradorModel);
-} 
+}
