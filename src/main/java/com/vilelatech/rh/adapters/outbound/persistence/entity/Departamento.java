@@ -2,19 +2,17 @@ package com.vilelatech.rh.adapters.outbound.persistence.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
+import lombok.experimental.SuperBuilder;
 
 @Entity
 @Table(name = "TB_DEPARTAMENTO")
 @Data
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Departamento {
+public class Departamento extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,10 +27,4 @@ public class Departamento {
 
     @Column(name = "ATIVO", nullable = false)
     private Boolean ativo;
-
-    @Column(name = "DATA_CRIACAO", nullable = false)
-    private LocalDateTime dataCriacao;
-
-    @Column(name = "DATA_ATUALIZACAO", nullable = false)
-    private LocalDateTime dataAtualizacao;
 }

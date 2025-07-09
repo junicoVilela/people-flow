@@ -2,23 +2,19 @@ package com.vilelatech.rh.domain.model;
 
 import com.vilelatech.rh.domain.model.enums.Role;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
+import lombok.experimental.SuperBuilder;
 
 @Data
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UsuarioModel {
+public class UsuarioModel extends BaseModel {
     private Long id;
     private String nome;
     private String email;
     private String senhaHash;
     private Role role;
     private boolean ativo;
-    private LocalDateTime dataCriacao;
-    private LocalDateTime dataAtualizacao;
 } 

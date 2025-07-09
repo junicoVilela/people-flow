@@ -3,22 +3,21 @@ package com.vilelatech.rh.adapters.outbound.persistence.entity;
 import com.vilelatech.rh.domain.model.enums.TipoRegistro;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Entity
 @Table(name = "TB_REGISTRO_PONTO")
 @Data
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RegistroPonto {
+public class RegistroPonto extends BaseEntity {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,10 +44,4 @@ public class RegistroPonto {
     @Enumerated(EnumType.STRING)
     @Column(name = "tipo_registro", length = 20, nullable = false)
     private TipoRegistro tipoRegistro;
-    
-    @Column(name = "criado_em", nullable = false)
-    private LocalDateTime criadoEm;
-    
-    @Column(name = "atualizado_em", nullable = false)
-    private LocalDateTime atualizadoEm;
 } 

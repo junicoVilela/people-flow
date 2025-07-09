@@ -1,6 +1,7 @@
 package com.vilelatech.rh.infrastructure.exception;
 
 import com.vilelatech.rh.application.exception.AutenticacaoException;
+import com.vilelatech.rh.application.exception.ConflitoConcorrenciaException;
 import com.vilelatech.rh.application.exception.EntidadeNaoEncontradaException;
 import com.vilelatech.rh.application.exception.NegocioException;
 import com.vilelatech.rh.application.exception.ValidacaoException;
@@ -8,6 +9,7 @@ import com.vilelatech.rh.domain.exception.ColaboradorInvalidoException;
 import com.vilelatech.rh.domain.exception.RegrasNegocioException;
 import com.vilelatech.rh.domain.exception.RegistroPontoInvalidoException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -94,6 +96,27 @@ public class GlobalExceptionHandler {
             .build();
             
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
+    }
+
+    /**
+     * Trata conflitos de concorrência otimista
+     */
+    @ExceptionHandler({ConflitoConcorrenciaException.class, OptimisticLockingFailureException.class})
+    public ResponseEntity<ErrorResponse> handleConflitoConcorrencia(Exception ex) {
+        log.warn("Conflito de concorrência detectado: {}", ex.getMessage());
+        
+        String message = ex instanceof ConflitoConcorrenciaException ? 
+            ex.getMessage() : 
+            "O registro foi modificado por outro usuário. Recarregue a página e tente novamente.";
+        
+        ErrorResponse errorResponse = ErrorResponse.builder()
+            .timestamp(LocalDateTime.now())
+            .status(HttpStatus.CONFLICT.value())
+            .error("Conflito de concorrência")
+            .message(message)
+            .build();
+            
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
     }
 
     /**

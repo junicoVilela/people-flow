@@ -2,18 +2,17 @@ package com.vilelatech.rh.domain.model;
 
 import com.vilelatech.rh.domain.model.enums.NivelCargo;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 @Data
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CargoModel {
+public class CargoModel extends BaseModel {
 
     private Long id;
     private String nome;
@@ -21,8 +20,6 @@ public class CargoModel {
     private NivelCargo nivel;
     private BigDecimal salarioBase;
     private Boolean ativo;
-    private LocalDateTime dataCriacao;
-    private LocalDateTime dataAtualizacao;
 
     private Long departamentoId;
     private DepartamentoModel departamento;

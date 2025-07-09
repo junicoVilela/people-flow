@@ -2,19 +2,18 @@ package com.vilelatech.rh.domain.model;
 
 import com.vilelatech.rh.domain.model.enums.StatusColaborador;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Data
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ColaboradorModel {
+public class ColaboradorModel extends BaseModel {
     private Long id;
     private String cpf;
     private String rg;
@@ -29,8 +28,6 @@ public class ColaboradorModel {
     private LocalDate dataAdmissao;
     private LocalDate dataDemissao;
     private StatusColaborador status;
-    private LocalDateTime dataCriacao;
-    private LocalDateTime dataAtualizacao;
 
     private Long usuarioId;
     private UsuarioModel usuario;

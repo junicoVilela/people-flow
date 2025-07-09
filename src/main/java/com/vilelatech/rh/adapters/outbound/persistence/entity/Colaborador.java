@@ -3,21 +3,20 @@ package com.vilelatech.rh.adapters.outbound.persistence.entity;
 import com.vilelatech.rh.domain.model.enums.StatusColaborador;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "TB_COLABORADOR")
 @Data
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Colaborador {
+public class Colaborador extends BaseEntity {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -64,12 +63,6 @@ public class Colaborador {
     @Column(name = "STATUS", length = 20)
     private StatusColaborador status;
     
-    @Column(name = "DATA_CRIACAO", nullable = false)
-    private LocalDateTime dataCriacao;
-    
-    @Column(name = "DATA_ATUALIZACAO", nullable = false)
-    private LocalDateTime dataAtualizacao;
-
     @Column(name = "USUARIO_ID", nullable = false)
     private Long usuarioId;
 

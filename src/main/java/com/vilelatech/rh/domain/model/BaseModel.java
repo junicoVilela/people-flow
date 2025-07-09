@@ -5,14 +5,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+import java.time.LocalDateTime;
+
 @Data
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class DepartamentoModel extends BaseModel {
-
-    private Long id;
-    private String nome;
-    private String descricao;
-    private Boolean ativo;
-}
+public abstract class BaseModel {
+    private LocalDateTime dataCriacao;
+    private LocalDateTime dataAtualizacao;
+    private String criadoPor;
+    private String atualizadoPor;
+} 

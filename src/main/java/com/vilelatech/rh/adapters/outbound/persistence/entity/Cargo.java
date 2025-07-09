@@ -3,20 +3,19 @@ package com.vilelatech.rh.adapters.outbound.persistence.entity;
 import com.vilelatech.rh.domain.model.enums.NivelCargo;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "TB_CARGO")
 @Data
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Cargo {
+public class Cargo extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,10 +44,4 @@ public class Cargo {
 
     @Column(name = "ATIVO", nullable = false)
     private Boolean ativo;
-
-    @Column(name = "DATA_CRIACAO", nullable = false)
-    private LocalDateTime dataCriacao;
-
-    @Column(name = "DATA_ATUALIZACAO", nullable = false)
-    private LocalDateTime dataAtualizacao;
 }

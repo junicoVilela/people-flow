@@ -2,20 +2,19 @@ package com.vilelatech.rh.domain.model;
 
 import com.vilelatech.rh.domain.model.enums.TipoRegistro;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Data
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RegistroPontoModel {
+public class RegistroPontoModel extends BaseModel {
     private Long id;
     private Long colaboradorId;
     private LocalDate dataRegistro;
@@ -24,6 +23,4 @@ public class RegistroPontoModel {
     private BigDecimal totalHoras;
     private String observacao;
     private TipoRegistro tipoRegistro;
-    private LocalDateTime criadoEm;
-    private LocalDateTime atualizadoEm;
 } 

@@ -3,19 +3,17 @@ package com.vilelatech.rh.adapters.outbound.persistence.entity;
 import com.vilelatech.rh.domain.model.enums.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
+import lombok.experimental.SuperBuilder;
 
 @Entity
 @Table(name = "TB_USUARIO")
 @Data
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Usuario {
+public class Usuario extends BaseEntity {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,10 +35,4 @@ public class Usuario {
     
     @Column(name = "ATIVO", nullable = false)
     private Boolean ativo;
-    
-    @Column(name = "DATA_CRIACAO", nullable = false)
-    private LocalDateTime dataCriacao;
-    
-    @Column(name = "DATA_ATUALIZACAO", nullable = false)
-    private LocalDateTime dataAtualizacao;
 } 
