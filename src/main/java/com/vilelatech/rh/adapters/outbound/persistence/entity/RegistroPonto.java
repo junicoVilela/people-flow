@@ -23,25 +23,25 @@ public class RegistroPonto extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    @Column(name = "colaborador_id", nullable = false)
+    @Column(name = "COLABORADOR_ID", nullable = false)
     private Long colaboradorId;
     
-    @Column(name = "data_registro", nullable = false)
+    @Column(name = "DATA_REGISTRO", nullable = false)
     private LocalDate dataRegistro;
     
-    @Column(name = "hora_entrada")
+    @Column(name = "HORA_ENTRADA")
     private LocalTime horaEntrada;
     
-    @Column(name = "hora_saida")
+    @Column(name = "HORA_SAIDA")
     private LocalTime horaSaida;
     
-    @Column(name = "total_horas", precision = 5, scale = 2)
+    @Column(name = "TOTAL_HORAS", precision = 5, scale = 2)
     private BigDecimal totalHoras;
     
-    @Column
+    @Column(name = "OBSERVACAO")
     private String observacao;
     
     @Enumerated(EnumType.STRING)
-    @Column(name = "tipo_registro", length = 20, nullable = false)
+    @Column(name = "TIPO_REGISTRO", length = 20, nullable = false)
     private TipoRegistro tipoRegistro;
 } 
