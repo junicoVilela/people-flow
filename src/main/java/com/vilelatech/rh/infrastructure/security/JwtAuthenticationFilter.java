@@ -32,7 +32,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         
         // Ignorar endpoints públicos
         String path = request.getRequestURI();
-        if (shouldSkipFilter(path)) {
+        if (isPublicPath(path)) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -67,15 +67,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
     
-    private boolean shouldSkipFilter(String path) {
-        return path.startsWith("/api/auth") || 
+    private boolean isPublicPath(String path) {
+        return path.startsWith("/api/auth") ||
+               path.startsWith("/api/colaboradores") ||
                path.startsWith("/h2-console") ||
                path.startsWith("/swagger-ui") ||
-               path.startsWith("/v3/api-docs") ||
-               // Endpoints temporariamente abertos (sem backend implementado)
-               path.startsWith("/api/categories") ||
-               path.startsWith("/api/entries") ||
-               path.startsWith("/api/reports");
+               path.startsWith("/v3/api-docs");
     }
     
     private String getJwtFromRequest(HttpServletRequest request) {

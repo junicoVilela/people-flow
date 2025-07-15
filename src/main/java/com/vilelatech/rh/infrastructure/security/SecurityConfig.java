@@ -37,11 +37,7 @@ public class SecurityConfig {
                             new AntPathRequestMatcher("/api/auth/**"),
                             new AntPathRequestMatcher("/h2-console/**"),
                             new AntPathRequestMatcher("/swagger-ui/**"),
-                            new AntPathRequestMatcher("/v3/api-docs/**"),
-                            // Endpoints temporariamente abertos (sem backend implementado)
-                            new AntPathRequestMatcher("/api/categories/**"),
-                            new AntPathRequestMatcher("/api/entries/**"),
-                            new AntPathRequestMatcher("/api/reports/**")
+                            new AntPathRequestMatcher("/v3/api-docs/**")
                         ).permitAll()
                         
                         // Endpoint de colaboradores - apenas perfis ADMIN e RH
