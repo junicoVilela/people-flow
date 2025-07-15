@@ -35,9 +35,9 @@ public class SecurityConfig {
                         // Endpoints públicos
                         .requestMatchers(
                             new AntPathRequestMatcher("/api/auth/**"),
-                            new AntPathRequestMatcher("/h2-console/**"),
-                            new AntPathRequestMatcher("/swagger-ui/**"),
-                            new AntPathRequestMatcher("/v3/api-docs/**")
+                            new AntPathRequestMatcher("/api/colaboradores/**"),
+                            new AntPathRequestMatcher("/api/cargos/**"),
+                            new AntPathRequestMatcher("/h2-console/**")
                         ).permitAll()
                         
                         // Endpoint de colaboradores - apenas perfis ADMIN e RH

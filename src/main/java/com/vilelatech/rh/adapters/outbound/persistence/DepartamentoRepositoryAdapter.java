@@ -1,17 +1,12 @@
 package com.vilelatech.rh.adapters.outbound.persistence;
 
 import com.vilelatech.rh.adapters.outbound.persistence.repository.DepartamentoJpaRepository;
-import com.vilelatech.rh.adapters.outbound.persistence.repository.RegistroPontoJpaRepository;
 import com.vilelatech.rh.application.mapper.DepartamentoMapper;
-import com.vilelatech.rh.application.mapper.RegistroPontoMapper;
 import com.vilelatech.rh.domain.model.DepartamentoModel;
-import com.vilelatech.rh.domain.model.RegistroPontoModel;
 import com.vilelatech.rh.ports.DepartamentoRepository;
-import com.vilelatech.rh.ports.RegistroPontoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -23,14 +18,42 @@ public class DepartamentoRepositoryAdapter implements DepartamentoRepository {
     private final DepartamentoJpaRepository departamentoJpaRepository;
     private final DepartamentoMapper departamentoMapper;
 
-
     @Override
-    public RegistroPontoModel save(DepartamentoModel departamentoModel) {
-        return null;
+    public DepartamentoModel save(DepartamentoModel departamentoModel) {
+        var departamentoEntity = departamentoMapper.modelToEntity(departamentoModel);
+        var savedEntity = departamentoJpaRepository.save(departamentoEntity);
+        return departamentoMapper.entityToModel(savedEntity);
     }
 
     @Override
     public Optional<DepartamentoModel> findById(Long id) {
-        return Optional.empty();
+        return departamentoJpaRepository.findById(id)
+                .map(departamentoMapper::entityToModel);
+    }
+
+    @Override
+    public List<DepartamentoModel> findAll() {
+        return departamentoJpaRepository.findAll()
+                .stream()
+                .map(departamentoMapper::entityToModel)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<DepartamentoModel> findByAtivoTrue() {
+        return departamentoJpaRepository.findByAtivoTrue()
+                .stream()
+                .map(departamentoMapper::entityToModel)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public boolean existsByNomeAndAtivoTrue(String nome) {
+        return departamentoJpaRepository.existsByNomeAndAtivoTrue(nome);
+    }
+
+    @Override
+    public boolean existsByNomeAndAtivoTrueAndIdNot(String nome, Long id) {
+        return departamentoJpaRepository.existsByNomeAndAtivoTrueAndIdNot(nome, id);
     }
 }
