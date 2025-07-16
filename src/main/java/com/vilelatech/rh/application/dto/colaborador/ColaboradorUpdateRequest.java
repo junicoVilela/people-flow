@@ -25,13 +25,11 @@ public class ColaboradorUpdateRequest {
     @Size(max = 200, message = "Endereço deve ter no máximo 200 caracteres")
     private String endereco;
     
-    @NotBlank(message = "Cargo é obrigatório")
-    @Size(max = 100, message = "Cargo deve ter no máximo 100 caracteres")
-    private String cargo;
+    @NotNull(message = "Cargo é obrigatório")
+    private Long cargoId;
     
-    @NotBlank(message = "Departamento é obrigatório")
-    @Size(max = 100, message = "Departamento deve ter no máximo 100 caracteres")
-    private String departamento;
+    @NotNull(message = "Departamento é obrigatório")
+    private Long departamentoId;
     
     @NotNull(message = "Salário é obrigatório")
     @DecimalMin(value = "0.01", message = "Salário deve ser maior que zero")

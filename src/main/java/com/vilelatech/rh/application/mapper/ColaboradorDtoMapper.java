@@ -24,6 +24,8 @@ public abstract class ColaboradorDtoMapper {
 
     @Mapping(source = "usuario.nome", target = "nome")
     @Mapping(source = "usuario.email", target = "email")
+    @Mapping(target = "cargo", expression = "java(colaboradorModel.getCargo() != null ? colaboradorModel.getCargo() : \"\")")
+    @Mapping(target = "departamento", expression = "java(colaboradorModel.getDepartamento() != null ? colaboradorModel.getDepartamento() : \"\")")
     public abstract ColaboradorResponse toResponse(ColaboradorModel colaboradorModel);
 
     @Mapping(target = "status", constant = "ATIVO")

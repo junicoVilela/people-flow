@@ -23,6 +23,7 @@ public interface CargoDtoMapper {
     CargoModel requestToModel(CargoRequest request);
 
     @Mapping(source = "departamento.nome", target = "departamentoNome")
+    @Mapping(source = "departamentoId", target = "departamentoId")
     CargoResponse modelToResponse(CargoModel model);
 
     List<CargoResponse> modelsToResponses(List<CargoModel> models);

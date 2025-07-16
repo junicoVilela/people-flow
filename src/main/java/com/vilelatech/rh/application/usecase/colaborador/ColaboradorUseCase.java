@@ -1,17 +1,18 @@
 package com.vilelatech.rh.application.usecase.colaborador;
 
-import com.vilelatech.rh.application.mapper.ColaboradorDtoMapper;
 import com.vilelatech.rh.application.dto.colaborador.ColaboradorRequest;
 import com.vilelatech.rh.application.dto.colaborador.ColaboradorResponse;
 import com.vilelatech.rh.application.dto.colaborador.ColaboradorUpdateRequest;
 import com.vilelatech.rh.application.dto.colaborador.InativacaoRequest;
 import com.vilelatech.rh.application.exception.EntidadeNaoEncontradaException;
 import com.vilelatech.rh.application.exception.NegocioException;
+import com.vilelatech.rh.application.mapper.ColaboradorDtoMapper;
 import com.vilelatech.rh.domain.model.ColaboradorModel;
 import com.vilelatech.rh.domain.model.UsuarioModel;
-import com.vilelatech.rh.domain.model.enums.Role;
 import com.vilelatech.rh.domain.model.enums.StatusColaborador;
+import com.vilelatech.rh.ports.CargoRepository;
 import com.vilelatech.rh.ports.ColaboradorRepository;
+import com.vilelatech.rh.ports.DepartamentoRepository;
 import com.vilelatech.rh.ports.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -29,6 +30,8 @@ import java.util.stream.Collectors;
 public class ColaboradorUseCase {
     private final ColaboradorRepository colaboradorRepository;
     private final UsuarioRepository usuarioRepository;
+    private final DepartamentoRepository departamentoRepository;
+    private final CargoRepository cargoRepository;
     private final PasswordEncoder passwordEncoder;
     private final ColaboradorDtoMapper colaboradorDtoMapper;
 
@@ -42,12 +45,22 @@ public class ColaboradorUseCase {
             throw new NegocioException("CPF já cadastrado: " + request.getCpf());
         }
 
+        // Validar se o departamento existe e obter o nome
+        var departamento = departamentoRepository.findById(request.getDepartamentoId())
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Departamento não encontrado com ID: " + request.getDepartamentoId()));
+
+        // Validar se o cargo existe e obter o nome
+        var cargo = cargoRepository.findById(request.getCargoId())
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Cargo não encontrado com ID: " + request.getCargoId()));
+
         UsuarioModel usuario = colaboradorDtoMapper.toUsuarioModel(request);
         usuario = usuarioRepository.save(usuario);
 
         ColaboradorModel colaboradorModel = colaboradorDtoMapper.toDomain(request);
         colaboradorModel.setUsuarioId(usuario.getId());
         colaboradorModel.setUsuario(usuario);
+        colaboradorModel.setDepartamento(departamento.getNome());
+        colaboradorModel.setCargo(cargo.getNome());
         
         colaboradorRepository.save(colaboradorModel);
     }
@@ -78,8 +91,16 @@ public class ColaboradorUseCase {
         UsuarioModel usuario = usuarioRepository.findById(colaboradorModel.getUsuarioId())
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Usuario", colaboradorModel.getUsuarioId()));
 
+        var departamento = departamentoRepository.findById(request.getDepartamentoId())
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Departamento não encontrado com ID: " + request.getDepartamentoId()));
+
+        var cargo = cargoRepository.findById(request.getCargoId())
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Cargo não encontrado com ID: " + request.getCargoId()));
+
         colaboradorModel.setUsuario(usuario);
         colaboradorDtoMapper.updateColaborador(request, colaboradorModel);
+        colaboradorModel.setDepartamento(departamento.getNome());
+        colaboradorModel.setCargo(cargo.getNome());
 
         usuarioRepository.save(colaboradorModel.getUsuario());
         colaboradorRepository.save(colaboradorModel);

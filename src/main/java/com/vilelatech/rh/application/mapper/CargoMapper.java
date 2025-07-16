@@ -15,6 +15,7 @@ public interface CargoMapper {
 
     @Mapping(source = "departamento.nome", target = "departamento.nome")
     @Mapping(source = "departamento.id", target = "departamento.id")
+    @Mapping(source = "departamentoId", target = "departamentoId")
     CargoModel entityToModel(Cargo cargo);
 
     @Mapping(target = "departamento", ignore = true)
@@ -22,15 +23,4 @@ public interface CargoMapper {
 
     List<CargoModel> entitiesToModels(List<Cargo> cargos);
 
-    @AfterMapping
-    default void afterEntityToModel(Cargo cargo, @MappingTarget CargoModel cargoModel) {
-        if (cargo.getDepartamento() != null) {
-            cargoModel.setDepartamento(
-                com.vilelatech.rh.domain.model.DepartamentoModel.builder()
-                    .id(cargo.getDepartamento().getId())
-                    .nome(cargo.getDepartamento().getNome())
-                    .build()
-            );
-        }
-    }
 } 

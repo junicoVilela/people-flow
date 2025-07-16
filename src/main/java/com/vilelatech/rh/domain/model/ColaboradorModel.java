@@ -24,6 +24,8 @@ public class ColaboradorModel extends BaseModel {
     private String endereco;
     private String cargo;
     private String departamento;
+    private Long cargoId;
+    private Long departamentoId;
     private BigDecimal salario;
     private LocalDate dataAdmissao;
     private LocalDate dataDemissao;

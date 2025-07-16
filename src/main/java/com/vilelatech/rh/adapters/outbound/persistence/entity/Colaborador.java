@@ -50,6 +50,12 @@ public class Colaborador extends BaseEntity {
     @Column(name = "DEPARTAMENTO", length = 100)
     private String departamento;
     
+    @Column(name = "CARGO_ID")
+    private Long cargoId;
+    
+    @Column(name = "DEPARTAMENTO_ID")
+    private Long departamentoId;
+    
     @Column(name = "SALARIO", precision = 10, scale = 2)
     private BigDecimal salario;
     
