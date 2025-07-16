@@ -11,4 +11,6 @@ public interface CargoRepository {
     List<CargoModel> findByAtivoTrue();
     boolean existsByNomeAndAtivoTrue(String nome);
     boolean existsByNomeAndAtivoTrueAndIdNot(String nome, Long id);
+    int countByDepartamentoIdAndAtivoTrue(Long departamentoId);
+    int countByDepartamentoId(Long departamentoId);
 } 

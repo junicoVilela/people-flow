@@ -49,4 +49,14 @@ public class CargoRepositoryAdapter implements CargoRepository {
     public boolean existsByNomeAndAtivoTrueAndIdNot(String nome, Long id) {
         return cargoJpaRepository.existsByNomeAndAtivoTrueAndIdNot(nome, id);
     }
+
+    @Override
+    public int countByDepartamentoIdAndAtivoTrue(Long departamentoId) {
+        return cargoJpaRepository.countByDepartamentoIdAndAtivoTrue(departamentoId);
+    }
+
+    @Override
+    public int countByDepartamentoId(Long departamentoId) {
+        return cargoJpaRepository.countByDepartamentoId(departamentoId);
+    }
 }

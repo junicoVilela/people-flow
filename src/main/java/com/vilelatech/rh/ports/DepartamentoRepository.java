@@ -12,4 +12,5 @@ public interface DepartamentoRepository {
     List<DepartamentoModel> findByAtivoTrue();
     boolean existsByNomeAndAtivoTrue(String nome);
     boolean existsByNomeAndAtivoTrueAndIdNot(String nome, Long id);
+    void deleteById(Long id);
 } 

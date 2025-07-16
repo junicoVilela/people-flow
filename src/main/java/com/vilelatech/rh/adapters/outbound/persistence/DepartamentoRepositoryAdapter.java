@@ -56,4 +56,9 @@ public class DepartamentoRepositoryAdapter implements DepartamentoRepository {
     public boolean existsByNomeAndAtivoTrueAndIdNot(String nome, Long id) {
         return departamentoJpaRepository.existsByNomeAndAtivoTrueAndIdNot(nome, id);
     }
+
+    @Override
+    public void deleteById(Long id) {
+        departamentoJpaRepository.deleteById(id);
+    }
 }
