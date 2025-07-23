@@ -5,16 +5,12 @@ import com.vilelatech.rh.application.dto.colaborador.ColaboradorResponse;
 import com.vilelatech.rh.application.dto.colaborador.ColaboradorUpdateRequest;
 import com.vilelatech.rh.domain.model.ColaboradorModel;
 import com.vilelatech.rh.domain.model.UsuarioModel;
-import com.vilelatech.rh.domain.model.enums.Role;
-import com.vilelatech.rh.domain.model.enums.StatusColaborador;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.ReportingPolicy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
-import java.time.LocalDateTime;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public abstract class ColaboradorDtoMapper {
@@ -28,7 +24,6 @@ public abstract class ColaboradorDtoMapper {
     @Mapping(target = "departamento", expression = "java(colaboradorModel.getDepartamento() != null ? colaboradorModel.getDepartamento() : \"\")")
     public abstract ColaboradorResponse toResponse(ColaboradorModel colaboradorModel);
 
-    @Mapping(target = "status", constant = "ATIVO")
     @Mapping(target = "dataCriacao", expression = "java(java.time.LocalDateTime.now())")
     @Mapping(target = "dataAtualizacao", expression = "java(java.time.LocalDateTime.now())")
     public abstract ColaboradorModel toDomain(ColaboradorRequest request);

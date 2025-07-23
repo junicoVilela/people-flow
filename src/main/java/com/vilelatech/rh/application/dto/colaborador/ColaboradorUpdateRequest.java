@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 
 import jakarta.validation.constraints.*;
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import com.vilelatech.rh.domain.model.enums.StatusColaborador;
 
 @Data
 @Builder
@@ -35,4 +37,9 @@ public class ColaboradorUpdateRequest {
     @DecimalMin(value = "0.01", message = "Salário deve ser maior que zero")
     @Digits(integer = 10, fraction = 2, message = "Salário deve ter no máximo 10 dígitos inteiros e 2 decimais")
     private BigDecimal salario;
+    
+    private LocalDate dataDemissao;
+    
+    @NotNull(message = "Status é obrigatório")
+    private StatusColaborador status;
 } 

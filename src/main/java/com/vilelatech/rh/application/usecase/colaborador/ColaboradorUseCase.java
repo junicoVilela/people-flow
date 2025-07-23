@@ -1,9 +1,6 @@
 package com.vilelatech.rh.application.usecase.colaborador;
 
-import com.vilelatech.rh.application.dto.colaborador.ColaboradorRequest;
-import com.vilelatech.rh.application.dto.colaborador.ColaboradorResponse;
-import com.vilelatech.rh.application.dto.colaborador.ColaboradorUpdateRequest;
-import com.vilelatech.rh.application.dto.colaborador.InativacaoRequest;
+import com.vilelatech.rh.application.dto.colaborador.*;
 import com.vilelatech.rh.application.exception.EntidadeNaoEncontradaException;
 import com.vilelatech.rh.application.exception.NegocioException;
 import com.vilelatech.rh.application.mapper.ColaboradorDtoMapper;
@@ -45,11 +42,9 @@ public class ColaboradorUseCase {
             throw new NegocioException("CPF já cadastrado: " + request.getCpf());
         }
 
-        // Validar se o departamento existe e obter o nome
         var departamento = departamentoRepository.findById(request.getDepartamentoId())
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Departamento não encontrado com ID: " + request.getDepartamentoId()));
 
-        // Validar se o cargo existe e obter o nome
         var cargo = cargoRepository.findById(request.getCargoId())
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Cargo não encontrado com ID: " + request.getCargoId()));
 
@@ -71,8 +66,8 @@ public class ColaboradorUseCase {
                 .collect(Collectors.toList());
     }
 
-    public Page<ColaboradorResponse> listar(Pageable pageable) {
-        return colaboradorRepository.findAllWithUsuario(pageable)
+    public Page<ColaboradorResponse> listar(ColaboradorFilter colaboradorFilter, Pageable pageable) {
+        return colaboradorRepository.findAllWithFilters(colaboradorFilter, pageable)
                 .map(colaboradorDtoMapper::toResponse);
     }
 
@@ -114,12 +109,10 @@ public class ColaboradorUseCase {
         UsuarioModel usuario = usuarioRepository.findById(colaboradorModel.getUsuarioId())
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Usuario", colaboradorModel.getUsuarioId()));
 
-        // Inativar usuário
         usuario.setAtivo(false);
         usuario.setDataAtualizacao(LocalDateTime.now());
         usuarioRepository.save(usuario);
 
-        // Inativar colaborador
         colaboradorModel.setStatus(StatusColaborador.DESLIGADO);
         colaboradorModel.setDataDemissao(request.getDataDemissao());
         colaboradorModel.setDataAtualizacao(LocalDateTime.now());

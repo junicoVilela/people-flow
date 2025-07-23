@@ -25,14 +25,10 @@ public class ColaboradorResponse {
     private String telefone;
     private String estadoCivil;
     private String endereco;
-    private String cargo;
     private String departamento;
-    private Long cargoId;
-    private Long departamentoId;
+    private String cargo;
     private BigDecimal salario;
     private LocalDate dataAdmissao;
     private LocalDate dataDemissao;
     private StatusColaborador status;
-    private LocalDateTime dataCriacao;
-    private LocalDateTime dataAtualizacao;
 } 

@@ -1,7 +1,9 @@
 package com.vilelatech.rh.adapters.outbound.persistence;
 
+import com.vilelatech.rh.application.dto.colaborador.ColaboradorFilter;
 import com.vilelatech.rh.application.mapper.ColaboradorMapper;
 import com.vilelatech.rh.adapters.outbound.persistence.repository.ColaboradorJpaRepository;
+import com.vilelatech.rh.adapters.outbound.persistence.specification.ColaboradorSpecification;
 import com.vilelatech.rh.domain.model.ColaboradorModel;
 import com.vilelatech.rh.domain.model.enums.StatusColaborador;
 import com.vilelatech.rh.ports.ColaboradorRepository;
@@ -46,8 +48,8 @@ public class ColaboradorRepositoryAdapter implements ColaboradorRepository {
         return colaboradorJpaRepository.existsByCpf(cpf);
     }
 
-    public Page<ColaboradorModel> findAllWithUsuario(Pageable pageable) {
-        return colaboradorJpaRepository.findAllWithUsuario(pageable)
+    public Page<ColaboradorModel> findAllWithFilters(ColaboradorFilter filter, Pageable pageable) {
+        return colaboradorJpaRepository.findAll(ColaboradorSpecification.withFilters(filter), pageable)
                 .map(colaboradorMapper::toDomain);
     }
 

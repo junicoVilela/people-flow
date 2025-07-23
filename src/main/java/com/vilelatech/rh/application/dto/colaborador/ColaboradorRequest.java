@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import jakarta.validation.constraints.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import com.vilelatech.rh.domain.model.enums.StatusColaborador;
 
 @Data
 @Builder
@@ -66,4 +67,9 @@ public class ColaboradorRequest {
     
     @NotNull(message = "Data de admissão é obrigatória")
     private LocalDate dataAdmissao;
+    
+    private LocalDate dataDemissao;
+    
+    @NotNull(message = "Status é obrigatório")
+    private StatusColaborador status;
 } 

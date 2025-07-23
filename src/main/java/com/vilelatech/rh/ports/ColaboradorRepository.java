@@ -1,5 +1,6 @@
 package com.vilelatech.rh.ports;
 
+import com.vilelatech.rh.application.dto.colaborador.ColaboradorFilter;
 import com.vilelatech.rh.domain.model.ColaboradorModel;
 import com.vilelatech.rh.domain.model.enums.StatusColaborador;
 import org.springframework.data.domain.Page;
@@ -13,7 +14,7 @@ public interface ColaboradorRepository {
     Optional<ColaboradorModel> findById(Long id);
     List<ColaboradorModel> findByStatus(StatusColaborador status);
     boolean existsByCpf(String cpf);
-    Page<ColaboradorModel> findAllWithUsuario(Pageable pageable);
+    Page<ColaboradorModel> findAllWithFilters(ColaboradorFilter filter, Pageable pageable);
     Optional<ColaboradorModel> findByIdWithUsuario(Long id);
     void delete(ColaboradorModel colaboradorModel);
 }
