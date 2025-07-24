@@ -74,7 +74,7 @@ public class ColaboradorUseCase {
     }
 
     public ColaboradorResponse buscarPorId(Long id) {
-        ColaboradorModel colaboradorModel = colaboradorRepository.findByIdWithUsuarioAndCargoAndDepartamento(id)
+        ColaboradorModel colaboradorModel = colaboradorRepository.findById(id)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Colaborador", id));
 
         return colaboradorDtoMapper.toResponse(colaboradorModel);

@@ -55,12 +55,6 @@ public class ColaboradorRepositoryAdapter implements ColaboradorRepository {
     }
     
     @Override
-    public Optional<ColaboradorModel> findByIdWithUsuarioAndCargoAndDepartamento(Long id) {
-        return colaboradorJpaRepository.findByIdWithUsuarioAndCargoAndDepartamento(id)
-                .map(colaboradorMapper::toDomain);
-    }
-    
-    @Override
     public void delete(ColaboradorModel colaboradorModel) {
         colaboradorJpaRepository.delete(colaboradorMapper.toEntity(colaboradorModel));
     }

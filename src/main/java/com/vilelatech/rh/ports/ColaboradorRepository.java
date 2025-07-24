@@ -15,6 +15,5 @@ public interface ColaboradorRepository {
     List<ColaboradorModel> findByStatusWithUsuarioAndCargoAndDepartamento(StatusColaborador status);
     boolean existsByCpf(String cpf);
     Page<ColaboradorModel> findAllWithFilters(ColaboradorFilter filter, Pageable pageable);
-    Optional<ColaboradorModel> findByIdWithUsuarioAndCargoAndDepartamento(Long id);
     void delete(ColaboradorModel colaboradorModel);
 }
