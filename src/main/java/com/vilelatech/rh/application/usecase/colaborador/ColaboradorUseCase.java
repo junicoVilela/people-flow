@@ -1,6 +1,10 @@
 package com.vilelatech.rh.application.usecase.colaborador;
 
-import com.vilelatech.rh.application.dto.colaborador.*;
+import com.vilelatech.rh.application.dto.colaborador.ColaboradorFilter;
+import com.vilelatech.rh.application.dto.colaborador.ColaboradorRequest;
+import com.vilelatech.rh.application.dto.colaborador.ColaboradorResponse;
+import com.vilelatech.rh.application.dto.colaborador.ColaboradorUpdateRequest;
+import com.vilelatech.rh.application.dto.colaborador.InativacaoRequest;
 import com.vilelatech.rh.application.exception.EntidadeNaoEncontradaException;
 import com.vilelatech.rh.application.exception.NegocioException;
 import com.vilelatech.rh.application.mapper.ColaboradorDtoMapper;
@@ -107,8 +111,16 @@ public class ColaboradorUseCase {
 
     @Transactional
     public void inativar(Long id, InativacaoRequest request) {
+        if (request.getDataDemissao() == null) {
+            throw new NegocioException("Data de demissão é obrigatória");
+        }
+
         ColaboradorModel colaboradorModel = colaboradorRepository.findById(id)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Colaborador", id));
+
+        if (colaboradorModel.getStatus() == StatusColaborador.DESLIGADO) {
+            throw new NegocioException("Colaborador já está desligado");
+        }
 
         UsuarioModel usuario = usuarioRepository.findById(colaboradorModel.getUsuarioId())
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Usuario", colaboradorModel.getUsuarioId()));
