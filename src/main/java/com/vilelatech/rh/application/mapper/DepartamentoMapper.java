@@ -8,7 +8,7 @@ import org.mapstruct.ReportingPolicy;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface DepartamentoMapper {
 
-    DepartamentoModel entityToModel(Departamento departamento);
+    DepartamentoModel toDomain(Departamento departamento);
     
-    Departamento modelToEntity(DepartamentoModel departamentoModel);
+    Departamento toEntity(DepartamentoModel departamentoModel);
 } 

@@ -44,12 +44,6 @@ public class Colaborador extends BaseEntity {
     @Column(name = "ENDERECO", columnDefinition = "TEXT")
     private String endereco;
     
-    @Column(name = "CARGO", length = 100)
-    private String cargo;
-    
-    @Column(name = "DEPARTAMENTO", length = 100)
-    private String departamento;
-    
     @Column(name = "CARGO_ID")
     private Long cargoId;
     
@@ -75,4 +69,12 @@ public class Colaborador extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USUARIO_ID", insertable = false, updatable = false)
     private Usuario usuario;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "CARGO_ID", insertable = false, updatable = false)
+    private Cargo cargo;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "DEPARTAMENTO_ID", insertable = false, updatable = false)
+    private Departamento departamento;
 } 

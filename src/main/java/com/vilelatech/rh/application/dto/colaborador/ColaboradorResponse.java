@@ -27,6 +27,8 @@ public class ColaboradorResponse {
     private String endereco;
     private String departamento;
     private String cargo;
+    private Long cargoId;
+    private Long departamentoId;
     private BigDecimal salario;
     private LocalDate dataAdmissao;
     private LocalDate dataDemissao;

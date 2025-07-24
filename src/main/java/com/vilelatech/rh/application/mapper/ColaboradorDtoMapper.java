@@ -5,6 +5,7 @@ import com.vilelatech.rh.application.dto.colaborador.ColaboradorResponse;
 import com.vilelatech.rh.application.dto.colaborador.ColaboradorUpdateRequest;
 import com.vilelatech.rh.domain.model.ColaboradorModel;
 import com.vilelatech.rh.domain.model.UsuarioModel;
+import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -20,17 +21,37 @@ public abstract class ColaboradorDtoMapper {
 
     @Mapping(source = "usuario.nome", target = "nome")
     @Mapping(source = "usuario.email", target = "email")
-    @Mapping(target = "cargo", expression = "java(colaboradorModel.getCargo() != null ? colaboradorModel.getCargo() : \"\")")
-    @Mapping(target = "departamento", expression = "java(colaboradorModel.getDepartamento() != null ? colaboradorModel.getDepartamento() : \"\")")
+    @Mapping(source = "cargo.nome", target = "cargo")
+    @Mapping(source = "departamento.nome", target = "departamento")
+    @Mapping(source = "cargoId", target = "cargoId")
+    @Mapping(source = "departamentoId", target = "departamentoId")
     public abstract ColaboradorResponse toResponse(ColaboradorModel colaboradorModel);
+
+    @AfterMapping
+    protected void afterToResponse(ColaboradorModel colaboradorModel, @MappingTarget ColaboradorResponse response) {
+        response.setCargo(mapCargoNome(colaboradorModel));
+        response.setDepartamento(mapDepartamentoNome(colaboradorModel));
+    }
+
+    protected String mapCargoNome(ColaboradorModel colaboradorModel) {
+        return colaboradorModel.getCargo() != null ? colaboradorModel.getCargo().getNome() : "";
+    }
+
+    protected String mapDepartamentoNome(ColaboradorModel colaboradorModel) {
+        return colaboradorModel.getDepartamento() != null ? colaboradorModel.getDepartamento().getNome() : "";
+    }
 
     @Mapping(target = "dataCriacao", expression = "java(java.time.LocalDateTime.now())")
     @Mapping(target = "dataAtualizacao", expression = "java(java.time.LocalDateTime.now())")
+    @Mapping(source = "cargoId", target = "cargoId")
+    @Mapping(source = "departamentoId", target = "departamentoId")
     public abstract ColaboradorModel toDomain(ColaboradorRequest request);
     
     @Mapping(target = "dataAtualizacao", expression = "java(java.time.LocalDateTime.now())")
     @Mapping(target = "usuario.nome", source = "nome")
     @Mapping(target = "usuario.dataAtualizacao", expression = "java(java.time.LocalDateTime.now())")
+    @Mapping(source = "cargoId", target = "cargoId")
+    @Mapping(source = "departamentoId", target = "departamentoId")
     public abstract void updateColaborador(ColaboradorUpdateRequest request, @MappingTarget ColaboradorModel colaboradorModel);
 
     @Mapping(target = "id", ignore = true)

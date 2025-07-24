@@ -13,14 +13,10 @@ import java.util.List;
 )
 public interface CargoMapper {
 
-    @Mapping(source = "departamento.nome", target = "departamento.nome")
-    @Mapping(source = "departamento.id", target = "departamento.id")
-    @Mapping(source = "departamentoId", target = "departamentoId")
-    CargoModel entityToModel(Cargo cargo);
+    CargoModel toDomain(Cargo cargo);
 
-    @Mapping(target = "departamento", ignore = true)
-    Cargo modelToEntity(CargoModel cargoModel);
+    Cargo toEntity(CargoModel cargoModel);
 
-    List<CargoModel> entitiesToModels(List<Cargo> cargos);
+    List<CargoModel> toDomainList(List<Cargo> cargos);
 
 } 

@@ -22,13 +22,15 @@ public class ColaboradorModel extends BaseModel {
     private String telefone;
     private String estadoCivil;
     private String endereco;
-    private String cargo;
-    private String departamento;
+    private Long usuarioId;
+    private Long cargoId;
+    private Long departamentoId;
     private BigDecimal salario;
     private LocalDate dataAdmissao;
     private LocalDate dataDemissao;
     private StatusColaborador status;
 
-    private Long usuarioId;
     private UsuarioModel usuario;
-} 
+    private CargoModel cargo;
+    private DepartamentoModel departamento;
+}

@@ -54,14 +54,16 @@ public class ColaboradorUseCase {
         ColaboradorModel colaboradorModel = colaboradorDtoMapper.toDomain(request);
         colaboradorModel.setUsuarioId(usuario.getId());
         colaboradorModel.setUsuario(usuario);
-        colaboradorModel.setDepartamento(departamento.getNome());
-        colaboradorModel.setCargo(cargo.getNome());
+        colaboradorModel.setDepartamentoId(departamento.getId());
+        colaboradorModel.setCargoId(cargo.getId());
+        colaboradorModel.setDepartamento(departamento);
+        colaboradorModel.setCargo(cargo);
         
         colaboradorRepository.save(colaboradorModel);
     }
 
     public List<ColaboradorResponse> listarAtivos() {
-        return colaboradorRepository.findByStatus(StatusColaborador.ATIVO).stream()
+        return colaboradorRepository.findByStatusWithUsuarioAndCargoAndDepartamento(StatusColaborador.ATIVO).stream()
                 .map(colaboradorDtoMapper::toResponse)
                 .collect(Collectors.toList());
     }
@@ -72,7 +74,7 @@ public class ColaboradorUseCase {
     }
 
     public ColaboradorResponse buscarPorId(Long id) {
-        ColaboradorModel colaboradorModel = colaboradorRepository.findByIdWithUsuario(id)
+        ColaboradorModel colaboradorModel = colaboradorRepository.findByIdWithUsuarioAndCargoAndDepartamento(id)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Colaborador", id));
 
         return colaboradorDtoMapper.toResponse(colaboradorModel);
@@ -94,8 +96,10 @@ public class ColaboradorUseCase {
 
         colaboradorModel.setUsuario(usuario);
         colaboradorDtoMapper.updateColaborador(request, colaboradorModel);
-        colaboradorModel.setDepartamento(departamento.getNome());
-        colaboradorModel.setCargo(cargo.getNome());
+        colaboradorModel.setDepartamentoId(departamento.getId());
+        colaboradorModel.setCargoId(cargo.getId());
+        colaboradorModel.setDepartamento(departamento);
+        colaboradorModel.setCargo(cargo);
 
         usuarioRepository.save(colaboradorModel.getUsuario());
         colaboradorRepository.save(colaboradorModel);

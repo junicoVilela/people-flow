@@ -12,9 +12,9 @@ import java.util.Optional;
 public interface ColaboradorRepository {
     ColaboradorModel save(ColaboradorModel colaboradorModel);
     Optional<ColaboradorModel> findById(Long id);
-    List<ColaboradorModel> findByStatus(StatusColaborador status);
+    List<ColaboradorModel> findByStatusWithUsuarioAndCargoAndDepartamento(StatusColaborador status);
     boolean existsByCpf(String cpf);
     Page<ColaboradorModel> findAllWithFilters(ColaboradorFilter filter, Pageable pageable);
-    Optional<ColaboradorModel> findByIdWithUsuario(Long id);
+    Optional<ColaboradorModel> findByIdWithUsuarioAndCargoAndDepartamento(Long id);
     void delete(ColaboradorModel colaboradorModel);
 }

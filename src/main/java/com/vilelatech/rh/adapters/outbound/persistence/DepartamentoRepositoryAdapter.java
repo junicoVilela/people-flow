@@ -20,22 +20,22 @@ public class DepartamentoRepositoryAdapter implements DepartamentoRepository {
 
     @Override
     public DepartamentoModel save(DepartamentoModel departamentoModel) {
-        var departamentoEntity = departamentoMapper.modelToEntity(departamentoModel);
+        var departamentoEntity = departamentoMapper.toEntity(departamentoModel);
         var savedEntity = departamentoJpaRepository.save(departamentoEntity);
-        return departamentoMapper.entityToModel(savedEntity);
+        return departamentoMapper.toDomain(savedEntity);
     }
 
     @Override
     public Optional<DepartamentoModel> findById(Long id) {
         return departamentoJpaRepository.findById(id)
-                .map(departamentoMapper::entityToModel);
+                .map(departamentoMapper::toDomain);
     }
 
     @Override
     public List<DepartamentoModel> findAll() {
         return departamentoJpaRepository.findAll()
                 .stream()
-                .map(departamentoMapper::entityToModel)
+                .map(departamentoMapper::toDomain)
                 .collect(Collectors.toList());
     }
 
@@ -43,7 +43,7 @@ public class DepartamentoRepositoryAdapter implements DepartamentoRepository {
     public List<DepartamentoModel> findByAtivoTrue() {
         return departamentoJpaRepository.findByAtivoTrue()
                 .stream()
-                .map(departamentoMapper::entityToModel)
+                .map(departamentoMapper::toDomain)
                 .collect(Collectors.toList());
     }
 

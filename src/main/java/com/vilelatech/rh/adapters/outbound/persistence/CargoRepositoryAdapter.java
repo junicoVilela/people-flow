@@ -22,22 +22,22 @@ public class CargoRepositoryAdapter implements CargoRepository {
 
     @Override
     public CargoModel save(CargoModel cargoModel) {
-        Cargo cargo = cargoMapper.modelToEntity(cargoModel);
+        Cargo cargo = cargoMapper.toEntity(cargoModel);
         Cargo cargoSalvo = cargoJpaRepository.save(cargo);
 
-        return cargoMapper.entityToModel(cargoSalvo);
+        return cargoMapper.toDomain(cargoSalvo);
     }
 
     @Override
     public Optional<CargoModel> findById(Long id) {
         Optional<Cargo> cargo = cargoJpaRepository.findById(id);
-        return cargo.map(cargoMapper::entityToModel);
+        return cargo.map(cargoMapper::toDomain);
     }
 
     @Override
     public List<CargoModel> findByAtivoTrue() {
         List<Cargo> cargos = cargoJpaRepository.findByAtivoTrueOrderByNome();
-        return cargoMapper.entitiesToModels(cargos);
+        return cargoMapper.toDomainList(cargos);
     }
 
     @Override

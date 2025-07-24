@@ -37,8 +37,8 @@ public class ColaboradorRepositoryAdapter implements ColaboradorRepository {
     }
     
     @Override
-    public List<ColaboradorModel> findByStatus(StatusColaborador status) {
-        return colaboradorJpaRepository.findByStatus(status).stream()
+    public List<ColaboradorModel> findByStatusWithUsuarioAndCargoAndDepartamento(StatusColaborador status) {
+        return colaboradorJpaRepository.findByStatusWithUsuarioAndCargoAndDepartamento(status).stream()
                 .map(colaboradorMapper::toDomain)
                 .collect(Collectors.toList());
     }
@@ -48,13 +48,15 @@ public class ColaboradorRepositoryAdapter implements ColaboradorRepository {
         return colaboradorJpaRepository.existsByCpf(cpf);
     }
 
+    @Override
     public Page<ColaboradorModel> findAllWithFilters(ColaboradorFilter filter, Pageable pageable) {
         return colaboradorJpaRepository.findAll(ColaboradorSpecification.withFilters(filter), pageable)
                 .map(colaboradorMapper::toDomain);
     }
-
-    public Optional<ColaboradorModel> findByIdWithUsuario(Long id) {
-        return colaboradorJpaRepository.findByIdWithUsuario(id)
+    
+    @Override
+    public Optional<ColaboradorModel> findByIdWithUsuarioAndCargoAndDepartamento(Long id) {
+        return colaboradorJpaRepository.findByIdWithUsuarioAndCargoAndDepartamento(id)
                 .map(colaboradorMapper::toDomain);
     }
     

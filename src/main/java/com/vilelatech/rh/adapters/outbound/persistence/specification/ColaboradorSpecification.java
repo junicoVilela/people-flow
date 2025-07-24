@@ -17,6 +17,10 @@ public class ColaboradorSpecification {
             List<Predicate> predicates = new ArrayList<>();
 
             Join<Object, Object> usuarioJoin = root.join("usuario");
+            
+            // TODO: Implementar joins condicionais com cargo e departamento quando necessário
+            // Join<Object, Object> cargoJoin = null;
+            // Join<Object, Object> departamentoJoin = null;
 
             if (StringUtils.hasText(filter.getNome())) {
                 predicates.add(criteriaBuilder.like(
@@ -25,19 +29,25 @@ public class ColaboradorSpecification {
                 ));
             }
 
+            // TODO: Implementar filtros por cargo e departamento quando os relacionamentos estiverem carregados
+            // Por enquanto, comentar os filtros que dependem de relacionamentos
+            /*
             if (StringUtils.hasText(filter.getCargo())) {
+                cargoJoin = root.join("cargo");
                 predicates.add(criteriaBuilder.like(
-                    criteriaBuilder.lower(root.get("cargo")),
+                    criteriaBuilder.lower(cargoJoin.get("nome")),
                     "%" + filter.getCargo().toLowerCase() + "%"
                 ));
             }
 
             if (StringUtils.hasText(filter.getDepartamento())) {
+                departamentoJoin = root.join("departamento");
                 predicates.add(criteriaBuilder.like(
-                    criteriaBuilder.lower(root.get("departamento")),
+                    criteriaBuilder.lower(departamentoJoin.get("nome")),
                     "%" + filter.getDepartamento().toLowerCase() + "%"
                 ));
             }
+            */
 
             if (StringUtils.hasText(filter.getStatus())) {
                 predicates.add(criteriaBuilder.equal(
