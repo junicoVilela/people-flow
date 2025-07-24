@@ -10,10 +10,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ColaboradorRepository {
-    ColaboradorModel save(ColaboradorModel colaboradorModel);
+    void save(ColaboradorModel colaboradorModel);
     Optional<ColaboradorModel> findById(Long id);
-    List<ColaboradorModel> findByStatusWithUsuarioAndCargoAndDepartamento(StatusColaborador status);
+    List<ColaboradorModel> findByStatus(StatusColaborador status);
     boolean existsByCpf(String cpf);
-    Page<ColaboradorModel> findAllWithFilters(ColaboradorFilter filter, Pageable pageable);
+    Page<ColaboradorModel> findAll(ColaboradorFilter filter, Pageable pageable);
     void delete(ColaboradorModel colaboradorModel);
 }

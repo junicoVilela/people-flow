@@ -24,10 +24,9 @@ public class ColaboradorRepositoryAdapter implements ColaboradorRepository {
     private final ColaboradorMapper colaboradorMapper;
     
     @Override
-    public ColaboradorModel save(ColaboradorModel colaboradorModel) {
+    public void save(ColaboradorModel colaboradorModel) {
         var entity = colaboradorMapper.toEntity(colaboradorModel);
-        entity = colaboradorJpaRepository.save(entity);
-        return colaboradorMapper.toDomain(entity);
+        colaboradorJpaRepository.save(entity);
     }
     
     @Override
@@ -37,8 +36,8 @@ public class ColaboradorRepositoryAdapter implements ColaboradorRepository {
     }
     
     @Override
-    public List<ColaboradorModel> findByStatusWithUsuarioAndCargoAndDepartamento(StatusColaborador status) {
-        return colaboradorJpaRepository.findByStatusWithUsuarioAndCargoAndDepartamento(status).stream()
+    public List<ColaboradorModel> findByStatus(StatusColaborador status) {
+        return colaboradorJpaRepository.findByStatus(status).stream()
                 .map(colaboradorMapper::toDomain)
                 .collect(Collectors.toList());
     }
@@ -49,7 +48,7 @@ public class ColaboradorRepositoryAdapter implements ColaboradorRepository {
     }
 
     @Override
-    public Page<ColaboradorModel> findAllWithFilters(ColaboradorFilter filter, Pageable pageable) {
+    public Page<ColaboradorModel> findAll(ColaboradorFilter filter, Pageable pageable) {
         return colaboradorJpaRepository.findAll(ColaboradorSpecification.withFilters(filter), pageable)
                 .map(colaboradorMapper::toDomain);
     }

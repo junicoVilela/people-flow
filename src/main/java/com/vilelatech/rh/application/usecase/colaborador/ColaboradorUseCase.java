@@ -10,6 +10,7 @@ import com.vilelatech.rh.application.exception.NegocioException;
 import com.vilelatech.rh.application.mapper.ColaboradorDtoMapper;
 import com.vilelatech.rh.domain.model.ColaboradorModel;
 import com.vilelatech.rh.domain.model.UsuarioModel;
+import com.vilelatech.rh.domain.model.enums.Role;
 import com.vilelatech.rh.domain.model.enums.StatusColaborador;
 import com.vilelatech.rh.ports.CargoRepository;
 import com.vilelatech.rh.ports.ColaboradorRepository;
@@ -53,27 +54,26 @@ public class ColaboradorUseCase {
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Cargo não encontrado com ID: " + request.getCargoId()));
 
         UsuarioModel usuario = colaboradorDtoMapper.toUsuarioModel(request);
-        usuario = usuarioRepository.save(usuario);
+        usuario.setSenhaHash(passwordEncoder.encode(request.getSenha()));
+        usuario.setRole(Role.COLABORADOR);
+        usuario.setAtivo(true);
+        usuarioRepository.save(usuario);
 
         ColaboradorModel colaboradorModel = colaboradorDtoMapper.toDomain(request);
         colaboradorModel.setUsuarioId(usuario.getId());
-        colaboradorModel.setUsuario(usuario);
         colaboradorModel.setDepartamentoId(departamento.getId());
         colaboradorModel.setCargoId(cargo.getId());
-        colaboradorModel.setDepartamento(departamento);
-        colaboradorModel.setCargo(cargo);
-        
         colaboradorRepository.save(colaboradorModel);
     }
 
     public List<ColaboradorResponse> listarAtivos() {
-        return colaboradorRepository.findByStatusWithUsuarioAndCargoAndDepartamento(StatusColaborador.ATIVO).stream()
+        return colaboradorRepository.findByStatus(StatusColaborador.ATIVO).stream()
                 .map(colaboradorDtoMapper::toResponse)
                 .collect(Collectors.toList());
     }
 
     public Page<ColaboradorResponse> listar(ColaboradorFilter colaboradorFilter, Pageable pageable) {
-        return colaboradorRepository.findAllWithFilters(colaboradorFilter, pageable)
+        return colaboradorRepository.findAll(colaboradorFilter, pageable)
                 .map(colaboradorDtoMapper::toResponse);
     }
 

@@ -15,10 +15,6 @@ import java.util.Optional;
 @Repository
 public interface ColaboradorJpaRepository extends JpaRepository<Colaborador, Long>, JpaSpecificationExecutor<Colaborador> {
     boolean existsByCpf(String cpf);
-    
-    @Query("SELECT c FROM Colaborador c JOIN FETCH c.usuario u JOIN FETCH c.cargo car JOIN FETCH c.departamento d WHERE c.id = :id")
-    Optional<Colaborador> findByIdWithUsuarioAndCargoAndDepartamento(Long id);
 
-    @Query("SELECT c FROM Colaborador c JOIN FETCH c.usuario u JOIN FETCH c.cargo car JOIN FETCH c.departamento d WHERE c.status = :status")
-    List<Colaborador> findByStatusWithUsuarioAndCargoAndDepartamento(StatusColaborador status);
+    List<Colaborador> findByStatus(StatusColaborador status);
 } 
