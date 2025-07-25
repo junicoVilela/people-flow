@@ -84,20 +84,14 @@ public class ColaboradorUseCase {
         UsuarioModel usuario = usuarioRepository.findById(colaboradorModel.getUsuarioId())
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Usuario", colaboradorModel.getUsuarioId()));
 
-        var departamento = departamentoRepository.findById(request.getDepartamentoId())
-                .orElseThrow(() -> new EntidadeNaoEncontradaException("Departamento não encontrado com ID: " + request.getDepartamentoId()));
-
-        var cargo = cargoRepository.findById(request.getCargoId())
-                .orElseThrow(() -> new EntidadeNaoEncontradaException("Cargo não encontrado com ID: " + request.getCargoId()));
-
         colaboradorModel.setUsuario(usuario);
         colaboradorDtoMapper.updateColaborador(request, colaboradorModel);
-        colaboradorModel.setDepartamentoId(departamento.getId());
-        colaboradorModel.setCargoId(cargo.getId());
-        colaboradorModel.setDepartamento(departamento);
-        colaboradorModel.setCargo(cargo);
 
-        usuarioRepository.save(colaboradorModel.getUsuario());
+        if (request.getSenha() != null && !request.getSenha().isEmpty()) {
+            usuario.setSenhaHash(passwordEncoder.encode(request.getSenha()));
+        }
+
+        usuarioRepository.save(usuario);
         colaboradorRepository.save(colaboradorModel);
     }
 

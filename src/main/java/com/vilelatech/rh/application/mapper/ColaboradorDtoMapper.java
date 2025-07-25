@@ -21,7 +21,21 @@ public abstract class ColaboradorDtoMapper {
 
     public abstract ColaboradorModel toDomain(ColaboradorRequest request);
 
+    @Mapping(target = "cpf", source = "cpf")
+    @Mapping(target = "rg", source = "rg")
+    @Mapping(target = "dataNascimento", source = "dataNascimento")
+    @Mapping(target = "sexo", source = "sexo")
+    @Mapping(target = "telefone", source = "telefone")
+    @Mapping(target = "estadoCivil", source = "estadoCivil")
+    @Mapping(target = "endereco", source = "endereco")
+    @Mapping(target = "cargoId", source = "cargoId")
+    @Mapping(target = "departamentoId", source = "departamentoId")
+    @Mapping(target = "salario", source = "salario")
+    @Mapping(target = "dataAdmissao", source = "dataAdmissao")
+    @Mapping(target = "dataDemissao", source = "dataDemissao")
+    @Mapping(target = "status", source = "status")
     @Mapping(target = "usuario.nome", source = "nome")
+    @Mapping(target = "usuario.email", source = "email")
     public abstract void updateColaborador(ColaboradorUpdateRequest request, @MappingTarget ColaboradorModel colaboradorModel);
 
     @Mapping(target = "id", ignore = true)
