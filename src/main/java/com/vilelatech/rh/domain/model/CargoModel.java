@@ -22,5 +22,4 @@ public class CargoModel extends BaseModel {
     private Boolean ativo;
 
     private Long departamentoId;
-    private DepartamentoModel departamento;
 }

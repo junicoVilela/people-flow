@@ -15,30 +15,12 @@ import java.util.List;
 public interface CargoDtoMapper {
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "departamento", ignore = true)
-    @Mapping(target = "dataCriacao", ignore = true)
-    @Mapping(target = "dataAtualizacao", ignore = true)
-    @Mapping(target = "criadoPor", ignore = true)
-    @Mapping(target = "atualizadoPor", ignore = true)
     CargoModel requestToModel(CargoRequest request);
 
-    @Mapping(source = "departamento.nome", target = "departamentoNome")
-    @Mapping(source = "departamentoId", target = "departamentoId")
     CargoResponse modelToResponse(CargoModel model);
 
     List<CargoResponse> modelsToResponses(List<CargoModel> models);
 
-    @AfterMapping
-    default void afterRequestToModel(CargoRequest request, @MappingTarget CargoModel model) {
-        if (model.getAtivo() == null) {
-            model.setAtivo(true);
-        }
-    }
-
-    @AfterMapping
-    default void afterModelToResponse(CargoModel model, @MappingTarget CargoResponse response) {
-        if (model.getDepartamento() != null) {
-            response.setDepartamentoNome(model.getDepartamento().getNome());
-        }
-    }
+    @Mapping(target = "id", ignore = true)
+    void updateModelFromRequest(CargoRequest request, @MappingTarget CargoModel model);
 } 

@@ -16,7 +16,6 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class CargoUseCase {
 
     private final CargoRepository cargoRepository;
@@ -25,80 +24,54 @@ public class CargoUseCase {
 
     @Transactional(readOnly = true)
     public List<CargoResponse> listar() {
-        log.debug("Listando todos os cargos");
         List<CargoModel> cargos = cargoRepository.findByAtivoTrue();
         return cargoDtoMapper.modelsToResponses(cargos);
     }
 
     @Transactional(readOnly = true)
     public CargoResponse buscarPorId(Long id) {
-        log.debug("Buscando cargo por ID: {}", id);
         CargoModel cargo = cargoRepository.findById(id)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Cargo não encontrado com ID: " + id));
         return cargoDtoMapper.modelToResponse(cargo);
     }
 
     @Transactional
-    public CargoResponse criar(CargoRequest request) {
-        log.debug("Criando novo cargo: {}", request.getNome());
-        
-        // Verificar se o departamento existe
+    public void criar(CargoRequest request) {
         departamentoRepository.findById(request.getDepartamentoId())
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Departamento não encontrado com ID: " + request.getDepartamentoId()));
         
-        // Verificar se já existe cargo com o mesmo nome
         if (cargoRepository.existsByNomeAndAtivoTrue(request.getNome())) {
             throw new IllegalArgumentException("Já existe um cargo ativo com o nome: " + request.getNome());
         }
         
         CargoModel cargoModel = cargoDtoMapper.requestToModel(request);
         cargoModel.setAtivo(true);
-        CargoModel cargoSalvo = cargoRepository.save(cargoModel);
-        
-        log.info("Cargo criado com sucesso: ID={}, Nome={}", cargoSalvo.getId(), cargoSalvo.getNome());
-        return cargoDtoMapper.modelToResponse(cargoSalvo);
+        cargoRepository.save(cargoModel);
     }
 
     @Transactional
-    public CargoResponse atualizar(Long id, CargoRequest request) {
-        log.debug("Atualizando cargo ID: {}", id);
-        
+    public void atualizar(Long id, CargoRequest request) {
         CargoModel cargoExistente = cargoRepository.findById(id)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Cargo não encontrado com ID: " + id));
         
-        // Verificar se o departamento existe
         departamentoRepository.findById(request.getDepartamentoId())
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Departamento não encontrado com ID: " + request.getDepartamentoId()));
         
-        // Verificar se já existe outro cargo com o mesmo nome
         if (cargoRepository.existsByNomeAndAtivoTrueAndIdNot(request.getNome(), id)) {
             throw new IllegalArgumentException("Já existe outro cargo ativo com o nome: " + request.getNome());
         }
         
-        cargoExistente.setNome(request.getNome());
-        cargoExistente.setDescricao(request.getDescricao());
-        cargoExistente.setNivel(request.getNivel());
-        cargoExistente.setDepartamentoId(request.getDepartamentoId());
-        cargoExistente.setSalarioBase(request.getSalarioBase());
-        cargoExistente.setAtivo(request.getAtivo());
+        cargoDtoMapper.updateModelFromRequest(request, cargoExistente);
         
-        CargoModel cargoAtualizado = cargoRepository.save(cargoExistente);
-        
-        log.info("Cargo atualizado com sucesso: ID={}, Nome={}", cargoAtualizado.getId(), cargoAtualizado.getNome());
-        return cargoDtoMapper.modelToResponse(cargoAtualizado);
+        cargoRepository.save(cargoExistente);
     }
 
     @Transactional
     public void inativar(Long id) {
-        log.debug("Inativando cargo ID: {}", id);
-        
         CargoModel cargo = cargoRepository.findById(id)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Cargo não encontrado com ID: " + id));
         
-        // Soft delete - marcar como inativo
         cargo.setAtivo(false);
         cargoRepository.save(cargo);
-        
-        log.info("Cargo inativado com sucesso: ID={}, Nome={}", cargo.getId(), cargo.getNome());
     }
 } 

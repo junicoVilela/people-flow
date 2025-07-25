@@ -32,14 +32,14 @@ public class CargoController {
 
     @PostMapping
     public ResponseEntity<CargoResponse> criar(@Valid @RequestBody CargoRequest request) {
-        CargoResponse cargo = cargoUseCase.criar(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(cargo);
+        cargoUseCase.criar(request);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<CargoResponse> atualizar(@PathVariable Long id, @Valid @RequestBody CargoRequest request) {
-        CargoResponse cargo = cargoUseCase.atualizar(id, request);
-        return ResponseEntity.ok(cargo);
+        cargoUseCase.atualizar(id, request);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @DeleteMapping("/{id}")

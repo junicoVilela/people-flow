@@ -21,6 +21,4 @@ public class CargoResponse {
     private String departamentoNome;
     private BigDecimal salarioBase;
     private Boolean ativo;
-    private LocalDateTime dataCriacao;
-    private LocalDateTime dataAtualizacao;
 } 

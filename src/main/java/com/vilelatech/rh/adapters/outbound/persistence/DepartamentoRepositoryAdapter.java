@@ -32,14 +32,6 @@ public class DepartamentoRepositoryAdapter implements DepartamentoRepository {
     }
 
     @Override
-    public List<DepartamentoModel> findAll() {
-        return departamentoJpaRepository.findAll()
-                .stream()
-                .map(departamentoMapper::toDomain)
-                .collect(Collectors.toList());
-    }
-
-    @Override
     public List<DepartamentoModel> findByAtivoTrue() {
         return departamentoJpaRepository.findByAtivoTrue()
                 .stream()
