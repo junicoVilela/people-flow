@@ -57,7 +57,7 @@ public class ColaboradorUseCase {
         usuario.setSenhaHash(passwordEncoder.encode(request.getSenha()));
         usuario.setRole(Role.COLABORADOR);
         usuario.setAtivo(true);
-        usuarioRepository.save(usuario);
+        usuario = usuarioRepository.save(usuario);
 
         ColaboradorModel colaboradorModel = colaboradorDtoMapper.toDomain(request);
         colaboradorModel.setUsuarioId(usuario.getId());
