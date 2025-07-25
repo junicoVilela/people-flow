@@ -1,10 +1,13 @@
 package com.vilelatech.rh.adapters.inbound.web.controller;
 
+import com.vilelatech.rh.application.dto.cargo.CargoFilter;
 import com.vilelatech.rh.application.dto.cargo.CargoRequest;
 import com.vilelatech.rh.application.dto.cargo.CargoResponse;
 import com.vilelatech.rh.application.usecase.cargo.CargoUseCase;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,9 +22,9 @@ public class CargoController {
     private CargoUseCase cargoUseCase;
 
     @GetMapping
-    public ResponseEntity<List<CargoResponse>> listar() {
-        List<CargoResponse> cargos = cargoUseCase.listar();
-        return ResponseEntity.ok(cargos);
+    public ResponseEntity<Page<CargoResponse>> listar(CargoFilter cargoFilter, Pageable pageable) {
+        Page<CargoResponse> response = cargoUseCase.listar(cargoFilter, pageable);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")

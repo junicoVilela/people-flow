@@ -2,11 +2,15 @@ package com.vilelatech.rh.adapters.outbound.persistence;
 
 import com.vilelatech.rh.adapters.outbound.persistence.entity.Cargo;
 import com.vilelatech.rh.adapters.outbound.persistence.repository.CargoJpaRepository;
+import com.vilelatech.rh.adapters.outbound.persistence.specification.CargoSpecification;
+import com.vilelatech.rh.application.dto.cargo.CargoFilter;
 import com.vilelatech.rh.application.mapper.CargoMapper;
 import com.vilelatech.rh.domain.model.CargoModel;
 import com.vilelatech.rh.ports.CargoRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -35,9 +39,9 @@ public class CargoRepositoryAdapter implements CargoRepository {
     }
 
     @Override
-    public List<CargoModel> findByAtivoTrue() {
-        List<Cargo> cargos = cargoJpaRepository.findByAtivoTrueOrderByNome();
-        return cargoMapper.toDomainList(cargos);
+    public Page<CargoModel> findAll(CargoFilter filter, Pageable pageable) {
+        return cargoJpaRepository.findAll(CargoSpecification.withFilters(filter), pageable)
+                .map(cargoMapper::toDomain);
     }
 
     @Override

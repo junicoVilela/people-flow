@@ -1,5 +1,6 @@
 package com.vilelatech.rh.application.usecase.cargo;
 
+import com.vilelatech.rh.application.dto.cargo.CargoFilter;
 import com.vilelatech.rh.application.dto.cargo.CargoRequest;
 import com.vilelatech.rh.application.dto.cargo.CargoResponse;
 import com.vilelatech.rh.application.exception.EntidadeNaoEncontradaException;
@@ -9,6 +10,8 @@ import com.vilelatech.rh.ports.CargoRepository;
 import com.vilelatech.rh.ports.DepartamentoRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,9 +26,9 @@ public class CargoUseCase {
     private final CargoDtoMapper cargoDtoMapper;
 
     @Transactional(readOnly = true)
-    public List<CargoResponse> listar() {
-        List<CargoModel> cargos = cargoRepository.findByAtivoTrue();
-        return cargoDtoMapper.modelsToResponses(cargos);
+    public Page<CargoResponse> listar(CargoFilter filter, Pageable pageable) {
+        Page<CargoModel> cargos = cargoRepository.findAll(filter, pageable);
+        return cargos.map(cargoDtoMapper::modelToResponse);
     }
 
     @Transactional(readOnly = true)
