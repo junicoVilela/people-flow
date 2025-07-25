@@ -3,6 +3,7 @@ package com.vilelatech.rh.domain.model;
 import com.vilelatech.rh.domain.model.enums.StatusColaborador;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
@@ -13,6 +14,7 @@ import java.time.LocalDate;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 public class ColaboradorModel extends BaseModel {
     private Long id;
     private String cpf;

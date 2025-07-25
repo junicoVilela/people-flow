@@ -24,8 +24,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -64,12 +62,6 @@ public class ColaboradorUseCase {
         colaboradorModel.setDepartamentoId(departamento.getId());
         colaboradorModel.setCargoId(cargo.getId());
         colaboradorRepository.save(colaboradorModel);
-    }
-
-    public List<ColaboradorResponse> listarAtivos() {
-        return colaboradorRepository.findByStatus(StatusColaborador.ATIVO).stream()
-                .map(colaboradorDtoMapper::toResponse)
-                .collect(Collectors.toList());
     }
 
     public Page<ColaboradorResponse> listar(ColaboradorFilter colaboradorFilter, Pageable pageable) {
