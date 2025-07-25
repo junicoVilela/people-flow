@@ -1,5 +1,6 @@
 package com.vilelatech.rh.application.usecase.departamento;
 
+import com.vilelatech.rh.application.dto.departamento.DepartamentoFilter;
 import com.vilelatech.rh.application.dto.departamento.DepartamentoRequest;
 import com.vilelatech.rh.application.dto.departamento.DepartamentoResponse;
 import com.vilelatech.rh.application.dto.departamento.DepartamentoUpdateRequest;
@@ -10,6 +11,8 @@ import com.vilelatech.rh.domain.model.DepartamentoModel;
 import com.vilelatech.rh.ports.CargoRepository;
 import com.vilelatech.rh.ports.DepartamentoRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,6 +36,12 @@ public class DepartamentoUseCase {
         });
         
         return responses;
+    }
+
+    @Transactional(readOnly = true)
+    public Page<DepartamentoResponse> listar(DepartamentoFilter filter, Pageable pageable) {
+        Page<DepartamentoModel> departamentos = departamentoRepository.findAll(filter, pageable);
+        return departamentos.map(departamentoDtoMapper::modelToResponse);
     }
 
     public DepartamentoResponse buscarPorId(Long id) {

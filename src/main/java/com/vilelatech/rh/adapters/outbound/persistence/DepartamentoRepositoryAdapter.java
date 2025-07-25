@@ -1,10 +1,14 @@
 package com.vilelatech.rh.adapters.outbound.persistence;
 
 import com.vilelatech.rh.adapters.outbound.persistence.repository.DepartamentoJpaRepository;
+import com.vilelatech.rh.adapters.outbound.persistence.specification.DepartamentoSpecification;
+import com.vilelatech.rh.application.dto.departamento.DepartamentoFilter;
 import com.vilelatech.rh.application.mapper.DepartamentoMapper;
 import com.vilelatech.rh.domain.model.DepartamentoModel;
 import com.vilelatech.rh.ports.DepartamentoRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -37,6 +41,12 @@ public class DepartamentoRepositoryAdapter implements DepartamentoRepository {
                 .stream()
                 .map(departamentoMapper::toDomain)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Page<DepartamentoModel> findAll(DepartamentoFilter filter, Pageable pageable) {
+        return departamentoJpaRepository.findAll(DepartamentoSpecification.withFilters(filter), pageable)
+                .map(departamentoMapper::toDomain);
     }
 
     @Override

@@ -1,10 +1,13 @@
 package com.vilelatech.rh.adapters.inbound.web.controller;
 
+import com.vilelatech.rh.application.dto.departamento.DepartamentoFilter;
 import com.vilelatech.rh.application.dto.departamento.DepartamentoRequest;
 import com.vilelatech.rh.application.dto.departamento.DepartamentoResponse;
 import com.vilelatech.rh.application.dto.departamento.DepartamentoUpdateRequest;
 import com.vilelatech.rh.application.usecase.departamento.DepartamentoUseCase;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,8 +36,8 @@ public class DepartamentoController {
     }
 
     @GetMapping
-    public ResponseEntity<List<DepartamentoResponse>> listarTodos() {
-        List<DepartamentoResponse> response = departamentoUseCase.listarTodos();
+    public ResponseEntity<Page<DepartamentoResponse>> listar(DepartamentoFilter departamentoFilter, Pageable pageable) {
+        Page<DepartamentoResponse> response = departamentoUseCase.listar(departamentoFilter, pageable);
         return ResponseEntity.ok(response);
     }
 
