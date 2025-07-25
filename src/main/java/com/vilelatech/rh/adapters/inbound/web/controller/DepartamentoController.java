@@ -46,12 +46,6 @@ public class DepartamentoController {
         return ResponseEntity.noContent().build();
     }
 
-    @PatchMapping("/{id}/inativar")
-    public ResponseEntity<Void> inativar(@PathVariable("id") Long id) {
-        departamentoUseCase.inativar(id);
-        return ResponseEntity.noContent().build();
-    }
-
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> excluir(@PathVariable("id") Long id) {
         departamentoUseCase.excluir(id);

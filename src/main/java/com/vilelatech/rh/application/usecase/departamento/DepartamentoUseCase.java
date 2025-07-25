@@ -24,10 +24,9 @@ public class DepartamentoUseCase {
     private final DepartamentoDtoMapper departamentoDtoMapper;
 
     public List<DepartamentoResponse> listarTodos() {
-        List<DepartamentoModel> departamentos = departamentoRepository.findByAtivoTrue();
+        List<DepartamentoModel> departamentos = departamentoRepository.findAll();
         List<DepartamentoResponse> responses = departamentoDtoMapper.modelsToResponses(departamentos);
         
-        // Adicionar quantidade de cargos para cada departamento
         responses.forEach(response -> {
             int quantidadeCargos = cargoRepository.countByDepartamentoIdAndAtivoTrue(response.getId());
             response.setQuantidadeCargos(quantidadeCargos);
@@ -66,36 +65,16 @@ public class DepartamentoUseCase {
             throw new NegocioException("Já existe outro departamento ativo com este nome");
         }
 
-        departamento.setNome(request.getNome());
-        departamento.setDescricao(request.getDescricao());
-        if (request.getAtivo() != null) {
-            departamento.setAtivo(request.getAtivo());
-        }
+        departamentoDtoMapper.updateModelFromRequest(request, departamento);
 
-        departamentoRepository.save(departamento);
-    }
-
-    @Transactional
-    public void inativar(Long id) {
-        DepartamentoModel departamento = departamentoRepository.findById(id)
-                .orElseThrow(() -> new EntidadeNaoEncontradaException("Departamento não encontrado com ID: " + id));
-
-        // Verificar se há cargos ativos vinculados
-        int quantidadeCargosAtivos = cargoRepository.countByDepartamentoIdAndAtivoTrue(id);
-        if (quantidadeCargosAtivos > 0) {
-            throw new NegocioException("Não é possível inativar o departamento. Existem " + quantidadeCargosAtivos + " cargo(s) ativo(s) vinculado(s).");
-        }
-
-        departamento.setAtivo(false);
         departamentoRepository.save(departamento);
     }
 
     @Transactional
     public void excluir(Long id) {
-        DepartamentoModel departamento = departamentoRepository.findById(id)
+        departamentoRepository.findById(id)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Departamento não encontrado com ID: " + id));
 
-        // Verificar se há cargos vinculados
         int quantidadeCargos = cargoRepository.countByDepartamentoId(id);
         if (quantidadeCargos > 0) {
             throw new NegocioException("Não é possível excluir o departamento. Existem " + quantidadeCargos + " cargo(s) vinculado(s).");

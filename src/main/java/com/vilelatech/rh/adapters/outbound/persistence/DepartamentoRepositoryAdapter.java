@@ -32,7 +32,7 @@ public class DepartamentoRepositoryAdapter implements DepartamentoRepository {
     }
 
     @Override
-    public List<DepartamentoModel> findByAtivoTrue() {
+    public List<DepartamentoModel> findAll() {
         return departamentoJpaRepository.findByAtivoTrue()
                 .stream()
                 .map(departamentoMapper::toDomain)

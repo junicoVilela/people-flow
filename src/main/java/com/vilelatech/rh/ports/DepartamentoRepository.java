@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface DepartamentoRepository {
     DepartamentoModel save(DepartamentoModel departamentoModel);
     Optional<DepartamentoModel> findById(Long id);
-    List<DepartamentoModel> findByAtivoTrue();
+    List<DepartamentoModel> findAll();
     boolean existsByNomeAndAtivoTrue(String nome);
     boolean existsByNomeAndAtivoTrueAndIdNot(String nome, Long id);
     void deleteById(Long id);
