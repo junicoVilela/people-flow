@@ -35,13 +35,13 @@ public class Cargo extends BaseEntity {
     @Column(name = "DEPARTAMENTO_ID", nullable = false)
     private Long departamentoId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "DEPARTAMENTO_ID", insertable = false, updatable = false)
-    private Departamento departamento;
-
     @Column(name = "SALARIO_BASE", precision = 10, scale = 2, nullable = false)
     private BigDecimal salarioBase;
 
     @Column(name = "ATIVO", nullable = false)
     private Boolean ativo;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "DEPARTAMENTO_ID", insertable = false, updatable = false)
+    private Departamento departamento;
 }

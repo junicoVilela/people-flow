@@ -17,11 +17,14 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Colaborador extends BaseEntity {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Long id;
+    
+    @Column(name = "USUARIO_ID", nullable = false)
+    private Long usuarioId;
     
     @Column(name = "CPF", length = 14, unique = true, nullable = false)
     private String cpf;
@@ -62,9 +65,6 @@ public class Colaborador extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "STATUS", length = 20)
     private StatusColaborador status;
-    
-    @Column(name = "USUARIO_ID", nullable = false)
-    private Long usuarioId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USUARIO_ID", insertable = false, updatable = false)
