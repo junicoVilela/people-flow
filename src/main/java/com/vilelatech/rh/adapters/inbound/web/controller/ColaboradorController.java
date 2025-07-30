@@ -6,6 +6,7 @@ import com.vilelatech.rh.application.dto.colaborador.ColaboradorResponse;
 import com.vilelatech.rh.application.dto.colaborador.ColaboradorUpdateRequest;
 import com.vilelatech.rh.application.dto.colaborador.InativacaoRequest;
 import com.vilelatech.rh.application.usecase.colaborador.ColaboradorUseCase;
+import com.vilelatech.rh.domain.model.enums.StatusColaborador;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -73,4 +74,10 @@ public class ColaboradorController {
         colaboradorUseCase.excluir(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/quantidade/{status}")
+    public ResponseEntity<Long> quantidadeAtivos(@PathVariable StatusColaborador status) {
+        return ResponseEntity.ok(colaboradorUseCase.quantidadePorStatus(status));
+    }
+
 } 

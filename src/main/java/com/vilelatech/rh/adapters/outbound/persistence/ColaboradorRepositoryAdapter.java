@@ -5,6 +5,7 @@ import com.vilelatech.rh.adapters.outbound.persistence.specification.Colaborador
 import com.vilelatech.rh.application.dto.colaborador.ColaboradorFilter;
 import com.vilelatech.rh.application.mapper.ColaboradorMapper;
 import com.vilelatech.rh.domain.model.ColaboradorModel;
+import com.vilelatech.rh.domain.model.enums.StatusColaborador;
 import com.vilelatech.rh.ports.ColaboradorRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -46,5 +47,10 @@ public class ColaboradorRepositoryAdapter implements ColaboradorRepository {
     @Override
     public void delete(ColaboradorModel colaboradorModel) {
         colaboradorJpaRepository.delete(colaboradorMapper.toEntity(colaboradorModel));
+    }
+
+    @Override
+    public Long quantidadePorStatus(StatusColaborador statusColaborador) {
+        return colaboradorJpaRepository.countByStatus(statusColaborador);
     }
 } 

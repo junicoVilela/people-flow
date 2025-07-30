@@ -6,7 +6,6 @@ import com.vilelatech.rh.domain.model.enums.StatusColaborador;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface ColaboradorRepository {
@@ -15,4 +14,5 @@ public interface ColaboradorRepository {
     boolean existsByCpf(String cpf);
     Page<ColaboradorModel> findAll(ColaboradorFilter filter, Pageable pageable);
     void delete(ColaboradorModel colaboradorModel);
+    Long quantidadePorStatus(StatusColaborador statusColaborador);
 }

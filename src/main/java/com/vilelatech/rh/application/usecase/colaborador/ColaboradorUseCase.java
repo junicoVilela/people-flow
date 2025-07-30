@@ -134,4 +134,9 @@ public class ColaboradorUseCase {
             usuarioRepository.deleteById(colaboradorModel.getUsuarioId());
         }
     }
+
+    @Transactional
+    public Long quantidadePorStatus(StatusColaborador statusColaborador) {
+        return colaboradorRepository.quantidadePorStatus(statusColaborador);
+    }
 } 
