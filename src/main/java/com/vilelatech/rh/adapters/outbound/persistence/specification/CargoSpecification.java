@@ -17,10 +17,7 @@ public class CargoSpecification {
         return (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
 
-            // Sempre filtrar apenas cargos ativos
-            predicates.add(criteriaBuilder.isTrue(root.get("ativo")));
-
-            Join<Cargo, Departamento> departamentoJoin = null;
+            Join<Cargo, Departamento> departamentoJoin = root.join("departamento");
 
             if (StringUtils.hasText(filter.getNome())) {
                 predicates.add(criteriaBuilder.like(
@@ -29,7 +26,6 @@ public class CargoSpecification {
             }
 
             if (StringUtils.hasText(filter.getDepartamento())) {
-                departamentoJoin = root.join("departamento");
                 predicates.add(criteriaBuilder.like(
                     criteriaBuilder.lower(departamentoJoin.get("nome")), "%" + filter.getDepartamento().toLowerCase() + "%"
                 ));

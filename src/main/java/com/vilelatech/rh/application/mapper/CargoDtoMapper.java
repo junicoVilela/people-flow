@@ -17,6 +17,7 @@ public interface CargoDtoMapper {
     @Mapping(target = "id", ignore = true)
     CargoModel requestToModel(CargoRequest request);
 
+    @Mapping(source = "departamentoNome", target = "departamentoNome")
     CargoResponse modelToResponse(CargoModel model);
 
     List<CargoResponse> modelsToResponses(List<CargoModel> models);

@@ -13,6 +13,7 @@ import java.util.List;
 )
 public interface CargoMapper {
 
+    @Mapping(source = "departamento.nome", target = "departamentoNome")
     CargoModel toDomain(Cargo cargo);
 
     Cargo toEntity(CargoModel cargoModel);
