@@ -13,7 +13,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -62,5 +61,10 @@ public class CargoRepositoryAdapter implements CargoRepository {
     @Override
     public int countByDepartamentoId(Long departamentoId) {
         return cargoJpaRepository.countByDepartamentoId(departamentoId);
+    }
+
+    @Override
+    public int quantidadePorStatus(Boolean status) {
+        return cargoJpaRepository.countByStatus(status);
     }
 }

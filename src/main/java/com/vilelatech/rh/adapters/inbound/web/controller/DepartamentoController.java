@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 @RestController
 @RequestMapping("/api/departamentos")
@@ -53,5 +55,19 @@ public class DepartamentoController {
     public ResponseEntity<Void> excluir(@PathVariable("id") Long id) {
         departamentoUseCase.excluir(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/quantidade/{status}")
+    public ResponseEntity<Integer> quantidadeAtivos(@PathVariable Boolean status) {
+        return ResponseEntity.ok(departamentoUseCase.quantidadePorStatus(status));
+    }
+
+    @GetMapping("/estatisticas")
+    public ResponseEntity<Map<String, Integer>> obterEstatisticas() {
+        Map<String, Integer> estatisticas = new HashMap<>();
+        estatisticas.put("total", departamentoUseCase.quantidadePorStatus(true) + departamentoUseCase.quantidadePorStatus(false));
+        estatisticas.put("ativos", departamentoUseCase.quantidadePorStatus(true));
+        estatisticas.put("inativos", departamentoUseCase.quantidadePorStatus(false));
+        return ResponseEntity.ok(estatisticas);
     }
 } 

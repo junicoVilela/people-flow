@@ -16,4 +16,5 @@ public interface DepartamentoRepository {
     boolean existsByNomeAndAtivoTrue(String nome);
     boolean existsByNomeAndAtivoTrueAndIdNot(String nome, Long id);
     void deleteById(Long id);
-} 
+    int quantidadePorStatus(Boolean status);
+}

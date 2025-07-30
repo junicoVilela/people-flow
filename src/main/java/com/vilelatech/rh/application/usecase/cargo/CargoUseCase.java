@@ -77,4 +77,9 @@ public class CargoUseCase {
         cargo.setAtivo(false);
         cargoRepository.save(cargo);
     }
+
+    @Transactional
+    public int quantidadePorStatus(Boolean status) {
+        return cargoRepository.quantidadePorStatus(status);
+    }
 } 

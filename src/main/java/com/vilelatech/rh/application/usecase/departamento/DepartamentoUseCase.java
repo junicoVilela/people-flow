@@ -91,4 +91,9 @@ public class DepartamentoUseCase {
 
         departamentoRepository.deleteById(id);
     }
+
+    @Transactional
+    public int quantidadePorStatus(Boolean status) {
+        return departamentoRepository.quantidadePorStatus(status);
+    }
 } 

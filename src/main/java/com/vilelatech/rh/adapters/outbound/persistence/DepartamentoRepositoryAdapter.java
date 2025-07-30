@@ -63,4 +63,9 @@ public class DepartamentoRepositoryAdapter implements DepartamentoRepository {
     public void deleteById(Long id) {
         departamentoJpaRepository.deleteById(id);
     }
+
+    @Override
+    public int quantidadePorStatus(Boolean status) {
+        return departamentoJpaRepository.countByStatus(status);
+    }
 }
