@@ -15,9 +15,6 @@ public class DepartamentoSpecification {
         return (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
 
-            // Sempre filtrar apenas departamentos ativos
-            predicates.add(criteriaBuilder.isTrue(root.get("ativo")));
-
             if (StringUtils.hasText(filter.getNome())) {
                 predicates.add(criteriaBuilder.like(
                     criteriaBuilder.lower(root.get("nome")), "%" + filter.getNome().toLowerCase() + "%"

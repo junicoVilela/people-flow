@@ -31,7 +31,7 @@ public class DepartamentoUseCase {
         List<DepartamentoResponse> responses = departamentoDtoMapper.modelsToResponses(departamentos);
         
         responses.forEach(response -> {
-            int quantidadeCargos = cargoRepository.countByDepartamentoIdAndAtivoTrue(response.getId());
+            int quantidadeCargos = cargoRepository.countByDepartamentoId(response.getId());
             response.setQuantidadeCargos(quantidadeCargos);
         });
         
@@ -41,7 +41,14 @@ public class DepartamentoUseCase {
     @Transactional(readOnly = true)
     public Page<DepartamentoResponse> listar(DepartamentoFilter filter, Pageable pageable) {
         Page<DepartamentoModel> departamentos = departamentoRepository.findAll(filter, pageable);
-        return departamentos.map(departamentoDtoMapper::modelToResponse);
+        Page<DepartamentoResponse> responses = departamentos.map(departamentoDtoMapper::modelToResponse);
+        
+        responses.getContent().forEach(response -> {
+            int quantidadeCargos = cargoRepository.countByDepartamentoId(response.getId());
+            response.setQuantidadeCargos(quantidadeCargos);
+        });
+        
+        return responses;
     }
 
     public DepartamentoResponse buscarPorId(Long id) {
@@ -49,7 +56,7 @@ public class DepartamentoUseCase {
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Departamento não encontrado com ID: " + id));
         
         DepartamentoResponse response = departamentoDtoMapper.modelToResponse(departamento);
-        int quantidadeCargos = cargoRepository.countByDepartamentoIdAndAtivoTrue(id);
+        int quantidadeCargos = cargoRepository.countByDepartamentoId(id);
         response.setQuantidadeCargos(quantidadeCargos);
         
         return response;

@@ -15,7 +15,6 @@ public interface CargoRepository {
     Page<CargoModel> findAll(CargoFilter filter, Pageable pageable);
     boolean existsByNomeAndAtivoTrue(String nome);
     boolean existsByNomeAndAtivoTrueAndIdNot(String nome, Long id);
-    int countByDepartamentoIdAndAtivoTrue(Long departamentoId);
     int countByDepartamentoId(Long departamentoId);
     int quantidadePorStatus(Boolean status);
 } 

@@ -54,11 +54,6 @@ public class CargoRepositoryAdapter implements CargoRepository {
     }
 
     @Override
-    public int countByDepartamentoIdAndAtivoTrue(Long departamentoId) {
-        return cargoJpaRepository.countByDepartamentoIdAndAtivoTrue(departamentoId);
-    }
-
-    @Override
     public int countByDepartamentoId(Long departamentoId) {
         return cargoJpaRepository.countByDepartamentoId(departamentoId);
     }
