@@ -4,18 +4,20 @@ import com.vilelatech.rh.application.dto.cargo.CargoFilter;
 import com.vilelatech.rh.application.dto.cargo.CargoRequest;
 import com.vilelatech.rh.application.dto.cargo.CargoResponse;
 import com.vilelatech.rh.application.usecase.cargo.CargoUseCase;
-import com.vilelatech.rh.domain.model.enums.StatusColaborador;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/cargos")
@@ -57,14 +59,5 @@ public class CargoController {
     @GetMapping("/quantidade/{status}")
     public ResponseEntity<Integer> quantidadeAtivos(@PathVariable Boolean status) {
         return ResponseEntity.ok(cargoUseCase.quantidadePorStatus(status));
-    }
-
-    @GetMapping("/estatisticas")
-    public ResponseEntity<Map<String, Integer>> obterEstatisticas() {
-        Map<String, Integer> estatisticas = new HashMap<>();
-        estatisticas.put("total", cargoUseCase.quantidadePorStatus(true) + cargoUseCase.quantidadePorStatus(false));
-        estatisticas.put("ativos", cargoUseCase.quantidadePorStatus(true));
-        estatisticas.put("inativos", cargoUseCase.quantidadePorStatus(false));
-        return ResponseEntity.ok(estatisticas);
     }
 } 
