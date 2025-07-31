@@ -1,8 +1,10 @@
 package com.vilelatech.rh.adapters.outbound.persistence.entity;
 
+import com.vilelatech.rh.domain.model.enums.Parentesco;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
@@ -14,6 +16,7 @@ import java.time.LocalDate;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 public class Dependente extends BaseEntity {
     
     @Id
@@ -30,8 +33,9 @@ public class Dependente extends BaseEntity {
     @Column(name = "DATA_NASCIMENTO", nullable = false)
     private LocalDate dataNascimento;
     
-    @Column(name = "PARENTESCO", length = 50, nullable = false)
-    private String parentesco;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "PARENTESCO", nullable = false)
+    private Parentesco parentesco;
     
     @Column(name = "CPF", length = 14)
     private String cpf;

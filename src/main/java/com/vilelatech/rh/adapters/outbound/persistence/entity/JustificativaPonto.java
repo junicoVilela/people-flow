@@ -1,8 +1,10 @@
 package com.vilelatech.rh.adapters.outbound.persistence.entity;
 
+import com.vilelatech.rh.domain.model.enums.StatusJustificativa;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
@@ -14,25 +16,29 @@ import java.time.LocalDateTime;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 public class JustificativaPonto extends BaseEntity {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Long id;
-    
-    @Column(name = "REGISTRO_PONTO_ID", nullable = false)
-    private Long registroPontoId;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "registro_ponto_id", nullable = false)
+    private RegistroPonto registroPonto;
     
     @Column(name = "MOTIVO", columnDefinition = "TEXT", nullable = false)
     private String motivo;
-    
-    @Column(name = "STATUS", length = 20, nullable = false)
-    private String status;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "STATUS",nullable = false)
+    private StatusJustificativa status;
     
     @Column(name = "DATA_ANALISE")
     private LocalDateTime dataAnalise;
-    
-    @Column(name = "ANALISTA_ID")
-    private Long analistaId;
+
+    @ManyToOne
+    @JoinColumn(name = "analista_id")
+    private Usuario analista;
 } 

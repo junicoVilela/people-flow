@@ -4,6 +4,7 @@ import com.vilelatech.rh.domain.model.enums.TipoRegistro;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
@@ -17,6 +18,7 @@ import java.time.LocalTime;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 public class RegistroPonto extends BaseEntity {
     
     @Id
@@ -42,6 +44,6 @@ public class RegistroPonto extends BaseEntity {
     private String observacao;
     
     @Enumerated(EnumType.STRING)
-    @Column(name = "TIPO_REGISTRO", length = 20, nullable = false)
+    @Column(name = "TIPO_REGISTRO", nullable = false)
     private TipoRegistro tipoRegistro;
 } 

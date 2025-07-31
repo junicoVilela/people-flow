@@ -1,8 +1,10 @@
 package com.vilelatech.rh.adapters.outbound.persistence.entity;
 
+import com.vilelatech.rh.domain.model.enums.TipoDocumento;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
@@ -14,6 +16,7 @@ import java.time.LocalDateTime;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 public class DocumentoColaborador extends BaseEntity {
     
     @Id
@@ -24,8 +27,9 @@ public class DocumentoColaborador extends BaseEntity {
     @Column(name = "COLABORADOR_ID", nullable = false)
     private Long colaboradorId;
     
-    @Column(name = "TIPO_DOCUMENTO", length = 50, nullable = false)
-    private String tipoDocumento;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "TIPO_DOCUMENTO", nullable = false)
+    private TipoDocumento tipoDocumento;
     
     @Column(name = "DESCRICAO", columnDefinition = "TEXT")
     private String descricao;

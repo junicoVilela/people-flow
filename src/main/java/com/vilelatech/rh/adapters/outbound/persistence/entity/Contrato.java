@@ -1,8 +1,11 @@
 package com.vilelatech.rh.adapters.outbound.persistence.entity;
 
+import com.vilelatech.rh.domain.model.enums.StatusContrato;
+import com.vilelatech.rh.domain.model.enums.TipoContrato;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
@@ -15,6 +18,7 @@ import java.time.LocalDate;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 public class Contrato extends BaseEntity {
     
     @Id
@@ -24,9 +28,10 @@ public class Contrato extends BaseEntity {
     
     @Column(name = "COLABORADOR_ID", nullable = false)
     private Long colaboradorId;
-    
-    @Column(name = "TIPO_CONTRATO", length = 50, nullable = false)
-    private String tipoContrato;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "TIPO_CONTRATO", nullable = false)
+    private TipoContrato tipoContrato;
     
     @Column(name = "DATA_INICIO", nullable = false)
     private LocalDate dataInicio;
@@ -39,7 +44,8 @@ public class Contrato extends BaseEntity {
     
     @Column(name = "CARGA_HORARIA_SEMANAL", nullable = false)
     private Integer cargaHorariaSemanal;
-    
-    @Column(name = "STATUS", length = 20, nullable = false)
-    private String status;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "STATUS", nullable = false)
+    private StatusContrato status;
 } 
