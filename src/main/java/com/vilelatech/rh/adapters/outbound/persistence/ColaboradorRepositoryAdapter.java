@@ -39,7 +39,7 @@ public class ColaboradorRepositoryAdapter implements ColaboradorRepository {
     }
 
     @Override
-    public Page<ColaboradorModel> findAll(ColaboradorFilter filter, Pageable pageable) {
+    public Page<ColaboradorModel> listar(ColaboradorFilter filter, Pageable pageable) {
         return colaboradorJpaRepository.findAll(ColaboradorSpecification.withFilters(filter), pageable)
                 .map(colaboradorMapper::toDomain);
     }

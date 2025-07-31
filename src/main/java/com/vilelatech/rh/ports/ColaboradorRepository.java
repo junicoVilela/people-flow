@@ -12,7 +12,7 @@ public interface ColaboradorRepository {
     void salvar(ColaboradorModel colaboradorModel);
     Optional<ColaboradorModel> buscarPorId(Long id);
     boolean existePorCpf(String cpf);
-    Page<ColaboradorModel> findAll(ColaboradorFilter filter, Pageable pageable);
+    Page<ColaboradorModel> listar(ColaboradorFilter filter, Pageable pageable);
     void excluir(ColaboradorModel colaboradorModel);
     Long quantidadePorStatus(StatusColaborador statusColaborador);
 }

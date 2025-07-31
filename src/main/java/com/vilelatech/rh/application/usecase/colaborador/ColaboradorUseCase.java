@@ -65,7 +65,7 @@ public class ColaboradorUseCase {
     }
 
     public Page<ColaboradorResponse> listar(ColaboradorFilter colaboradorFilter, Pageable pageable) {
-        return colaboradorRepository.findAll(colaboradorFilter, pageable)
+        return colaboradorRepository.listar(colaboradorFilter, pageable)
                 .map(colaboradorDtoMapper::toResponse);
     }
 
