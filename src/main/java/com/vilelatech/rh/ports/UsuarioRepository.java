@@ -5,9 +5,9 @@ import com.vilelatech.rh.domain.model.UsuarioModel;
 import java.util.Optional;
 
 public interface UsuarioRepository {
-    UsuarioModel save(UsuarioModel usuario);
-    Optional<UsuarioModel> findById(Long id);
-    Optional<UsuarioModel> findByEmail(String email);
-    boolean existsByEmail(String email);
-    void deleteById(Long id);
+    UsuarioModel salvar(UsuarioModel usuario);
+    Optional<UsuarioModel> buscarPorId(Long id);
+    Optional<UsuarioModel> buscarPorEmail(String email);
+    boolean existePorEmail(String email);
+    void excluirPorId(Long id);
 } 

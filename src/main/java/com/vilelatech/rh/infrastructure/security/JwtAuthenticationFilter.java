@@ -44,7 +44,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 String username = jwtProvider.extractUsername(jwt);
                 
                 if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                    Optional<UsuarioModel> usuarioOpt = usuarioRepository.findByEmail(username);
+                    Optional<UsuarioModel> usuarioOpt = usuarioRepository.buscarPorEmail(username);
                     
                     if (usuarioOpt.isPresent()) {
                         UsuarioModel usuario = usuarioOpt.get();

@@ -10,12 +10,12 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CargoJpaRepository extends JpaRepository<Cargo, Long>, JpaSpecificationExecutor<Cargo> {
 
-    boolean existsByNomeAndAtivoTrue(String nome);
+    boolean existsByNome(String nome);
 
-    boolean existsByNomeAndAtivoTrueAndIdNot(String nome, Long id);
+    boolean existsByNomeAndIdNot(String nome, Long id);
     
     int countByDepartamentoId(Long departamentoId);
 
     @Query("SELECT COUNT(c) FROM Cargo c WHERE c.ativo = :ativo")
-    int countByStatus(@Param("ativo") Boolean ativo);
+    int quantidadePorStatus(@Param("ativo") Boolean ativo);
 } 

@@ -9,10 +9,10 @@ import org.springframework.data.domain.Pageable;
 import java.util.Optional;
 
 public interface ColaboradorRepository {
-    void save(ColaboradorModel colaboradorModel);
-    Optional<ColaboradorModel> findById(Long id);
-    boolean existsByCpf(String cpf);
+    void salvar(ColaboradorModel colaboradorModel);
+    Optional<ColaboradorModel> buscarPorId(Long id);
+    boolean existePorCpf(String cpf);
     Page<ColaboradorModel> findAll(ColaboradorFilter filter, Pageable pageable);
-    void delete(ColaboradorModel colaboradorModel);
+    void excluir(ColaboradorModel colaboradorModel);
     Long quantidadePorStatus(StatusColaborador statusColaborador);
 }

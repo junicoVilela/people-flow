@@ -17,31 +17,31 @@ public class UsuarioRepositoryAdapter implements UsuarioRepository {
     private final UsuarioMapper usuarioMapper;
     
     @Override
-    public UsuarioModel save(UsuarioModel usuario) {
+    public UsuarioModel salvar(UsuarioModel usuario) {
         var entity = usuarioMapper.toEntity(usuario);
         entity = usuarioJpaRepository.save(entity);
         return usuarioMapper.toDomain(entity);
     }
     
     @Override
-    public Optional<UsuarioModel> findById(Long id) {
+    public Optional<UsuarioModel> buscarPorId(Long id) {
         return usuarioJpaRepository.findById(id)
                 .map(usuarioMapper::toDomain);
     }
     
     @Override
-    public Optional<UsuarioModel> findByEmail(String email) {
+    public Optional<UsuarioModel> buscarPorEmail(String email) {
         return usuarioJpaRepository.findByEmail(email)
                 .map(usuarioMapper::toDomain);
     }
     
     @Override
-    public boolean existsByEmail(String email) {
+    public boolean existePorEmail(String email) {
         return usuarioJpaRepository.existsByEmail(email);
     }
     
     @Override
-    public void deleteById(Long id) {
+    public void excluirPorId(Long id) {
         usuarioJpaRepository.deleteById(id);
     }
 } 

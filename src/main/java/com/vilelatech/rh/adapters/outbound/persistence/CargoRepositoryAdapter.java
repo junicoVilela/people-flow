@@ -24,7 +24,7 @@ public class CargoRepositoryAdapter implements CargoRepository {
     private final CargoMapper cargoMapper;
 
     @Override
-    public CargoModel save(CargoModel cargoModel) {
+    public CargoModel salvar(CargoModel cargoModel) {
         Cargo cargo = cargoMapper.toEntity(cargoModel);
         Cargo cargoSalvo = cargoJpaRepository.save(cargo);
 
@@ -32,34 +32,34 @@ public class CargoRepositoryAdapter implements CargoRepository {
     }
 
     @Override
-    public Optional<CargoModel> findById(Long id) {
+    public Optional<CargoModel> buscarPorId(Long id) {
         Optional<Cargo> cargo = cargoJpaRepository.findById(id);
         return cargo.map(cargoMapper::toDomain);
     }
 
     @Override
-    public Page<CargoModel> findAll(CargoFilter filter, Pageable pageable) {
+    public Page<CargoModel> listar(CargoFilter filter, Pageable pageable) {
         return cargoJpaRepository.findAll(CargoSpecification.withFilters(filter), pageable)
                 .map(cargoMapper::toDomain);
     }
 
     @Override
-    public boolean existsByNomeAndAtivoTrue(String nome) {
-        return cargoJpaRepository.existsByNomeAndAtivoTrue(nome);
+    public boolean existePorNome(String nome) {
+        return cargoJpaRepository.existsByNome(nome);
     }
 
     @Override
-    public boolean existsByNomeAndAtivoTrueAndIdNot(String nome, Long id) {
-        return cargoJpaRepository.existsByNomeAndAtivoTrueAndIdNot(nome, id);
+    public boolean existePorNomeComIdDiferente(String nome, Long id) {
+        return cargoJpaRepository.existsByNomeAndIdNot(nome, id);
     }
 
     @Override
-    public int countByDepartamentoId(Long departamentoId) {
+    public int quantidadePorDepartamentoId(Long departamentoId) {
         return cargoJpaRepository.countByDepartamentoId(departamentoId);
     }
 
     @Override
     public int quantidadePorStatus(Boolean status) {
-        return cargoJpaRepository.countByStatus(status);
+        return cargoJpaRepository.quantidadePorStatus(status);
     }
 }

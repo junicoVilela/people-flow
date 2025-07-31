@@ -17,7 +17,7 @@ public class AuthUseCase {
     private final PasswordEncoder passwordEncoder;
 
     public LoginResponse login(LoginRequest request) {
-        UsuarioModel usuario = usuarioRepository.findByEmail(request.getEmail())
+        UsuarioModel usuario = usuarioRepository.buscarPorEmail(request.getEmail())
                 .orElseThrow(() -> new BadCredentialsException("Credenciais inválidas"));
 
         // Usando PasswordEncoder (que agora faz comparação direta sem criptografia)

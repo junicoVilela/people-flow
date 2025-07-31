@@ -16,8 +16,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
 public class DepartamentoUseCase {
@@ -26,25 +24,13 @@ public class DepartamentoUseCase {
     private final CargoRepository cargoRepository;
     private final DepartamentoDtoMapper departamentoDtoMapper;
 
-    public List<DepartamentoResponse> listarTodos() {
-        List<DepartamentoModel> departamentos = departamentoRepository.findAll();
-        List<DepartamentoResponse> responses = departamentoDtoMapper.modelsToResponses(departamentos);
-        
-        responses.forEach(response -> {
-            int quantidadeCargos = cargoRepository.countByDepartamentoId(response.getId());
-            response.setQuantidadeCargos(quantidadeCargos);
-        });
-        
-        return responses;
-    }
-
     @Transactional(readOnly = true)
     public Page<DepartamentoResponse> listar(DepartamentoFilter filter, Pageable pageable) {
-        Page<DepartamentoModel> departamentos = departamentoRepository.findAll(filter, pageable);
+        Page<DepartamentoModel> departamentos = departamentoRepository.listar(filter, pageable);
         Page<DepartamentoResponse> responses = departamentos.map(departamentoDtoMapper::modelToResponse);
         
         responses.getContent().forEach(response -> {
-            int quantidadeCargos = cargoRepository.countByDepartamentoId(response.getId());
+            int quantidadeCargos = cargoRepository.quantidadePorDepartamentoId(response.getId());
             response.setQuantidadeCargos(quantidadeCargos);
         });
         
@@ -52,11 +38,11 @@ public class DepartamentoUseCase {
     }
 
     public DepartamentoResponse buscarPorId(Long id) {
-        DepartamentoModel departamento = departamentoRepository.findById(id)
+        DepartamentoModel departamento = departamentoRepository.buscarPorId(id)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Departamento não encontrado com ID: " + id));
         
         DepartamentoResponse response = departamentoDtoMapper.modelToResponse(departamento);
-        int quantidadeCargos = cargoRepository.countByDepartamentoId(id);
+        int quantidadeCargos = cargoRepository.quantidadePorDepartamentoId(id);
         response.setQuantidadeCargos(quantidadeCargos);
         
         return response;
@@ -64,39 +50,39 @@ public class DepartamentoUseCase {
 
     @Transactional
     public void cadastrar(DepartamentoRequest request) {
-        if (departamentoRepository.existsByNomeAndAtivoTrue(request.getNome())) {
+        if (departamentoRepository.existePorNome(request.getNome())) {
             throw new NegocioException("Já existe um departamento ativo com este nome");
         }
 
         DepartamentoModel departamento = departamentoDtoMapper.requestToModel(request);
-        departamentoRepository.save(departamento);
+        departamentoRepository.salvar(departamento);
     }
 
     @Transactional
     public void atualizar(Long id, DepartamentoUpdateRequest request) {
-        DepartamentoModel departamento = departamentoRepository.findById(id)
+        DepartamentoModel departamento = departamentoRepository.buscarPorId(id)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Departamento não encontrado com ID: " + id));
 
-        if (departamentoRepository.existsByNomeAndAtivoTrueAndIdNot(request.getNome(), id)) {
+        if (departamentoRepository.existePorNomeComIdDiferente(request.getNome(), id)) {
             throw new NegocioException("Já existe outro departamento ativo com este nome");
         }
 
         departamentoDtoMapper.updateModelFromRequest(request, departamento);
 
-        departamentoRepository.save(departamento);
+        departamentoRepository.salvar(departamento);
     }
 
     @Transactional
     public void excluir(Long id) {
-        departamentoRepository.findById(id)
+        departamentoRepository.buscarPorId(id)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Departamento não encontrado com ID: " + id));
 
-        int quantidadeCargos = cargoRepository.countByDepartamentoId(id);
+        int quantidadeCargos = cargoRepository.quantidadePorDepartamentoId(id);
         if (quantidadeCargos > 0) {
             throw new NegocioException("Não é possível excluir o departamento. Existem " + quantidadeCargos + " cargo(s) vinculado(s).");
         }
 
-        departamentoRepository.deleteById(id);
+        departamentoRepository.deletar(id);
     }
 
     @Transactional

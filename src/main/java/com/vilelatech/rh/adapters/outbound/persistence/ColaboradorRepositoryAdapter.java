@@ -22,19 +22,19 @@ public class ColaboradorRepositoryAdapter implements ColaboradorRepository {
     private final ColaboradorMapper colaboradorMapper;
     
     @Override
-    public void save(ColaboradorModel colaboradorModel) {
+    public void salvar(ColaboradorModel colaboradorModel) {
         var entity = colaboradorMapper.toEntity(colaboradorModel);
         colaboradorJpaRepository.save(entity);
     }
     
     @Override
-    public Optional<ColaboradorModel> findById(Long id) {
+    public Optional<ColaboradorModel> buscarPorId(Long id) {
         return colaboradorJpaRepository.findById(id)
                 .map(colaboradorMapper::toDomain);
     }
     
     @Override
-    public boolean existsByCpf(String cpf) {
+    public boolean existePorCpf(String cpf) {
         return colaboradorJpaRepository.existsByCpf(cpf);
     }
 
@@ -45,12 +45,12 @@ public class ColaboradorRepositoryAdapter implements ColaboradorRepository {
     }
     
     @Override
-    public void delete(ColaboradorModel colaboradorModel) {
+    public void excluir(ColaboradorModel colaboradorModel) {
         colaboradorJpaRepository.delete(colaboradorMapper.toEntity(colaboradorModel));
     }
 
     @Override
     public Long quantidadePorStatus(StatusColaborador statusColaborador) {
-        return colaboradorJpaRepository.countByStatus(statusColaborador);
+        return colaboradorJpaRepository.quantidadePorStatus(statusColaborador);
     }
 } 

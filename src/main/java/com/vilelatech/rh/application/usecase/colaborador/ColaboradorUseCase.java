@@ -37,31 +37,31 @@ public class ColaboradorUseCase {
 
     @Transactional
     public void cadastrar(ColaboradorRequest request) {
-        if (usuarioRepository.existsByEmail(request.getEmail())) {
+        if (usuarioRepository.existePorEmail(request.getEmail())) {
             throw new NegocioException("Email já cadastrado: " + request.getEmail());
         }
 
-        if (colaboradorRepository.existsByCpf(request.getCpf())) {
+        if (colaboradorRepository.existePorCpf(request.getCpf())) {
             throw new NegocioException("CPF já cadastrado: " + request.getCpf());
         }
 
-        var departamento = departamentoRepository.findById(request.getDepartamentoId())
+        var departamento = departamentoRepository.buscarPorId(request.getDepartamentoId())
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Departamento não encontrado com ID: " + request.getDepartamentoId()));
 
-        var cargo = cargoRepository.findById(request.getCargoId())
+        var cargo = cargoRepository.buscarPorId(request.getCargoId())
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Cargo não encontrado com ID: " + request.getCargoId()));
 
         UsuarioModel usuario = colaboradorDtoMapper.toUsuarioModel(request);
         usuario.setSenhaHash(passwordEncoder.encode(request.getSenha()));
         usuario.setRole(Role.COLABORADOR);
         usuario.setAtivo(true);
-        usuario = usuarioRepository.save(usuario);
+        usuario = usuarioRepository.salvar(usuario);
 
         ColaboradorModel colaboradorModel = colaboradorDtoMapper.toDomain(request);
         colaboradorModel.setUsuarioId(usuario.getId());
         colaboradorModel.setDepartamentoId(departamento.getId());
         colaboradorModel.setCargoId(cargo.getId());
-        colaboradorRepository.save(colaboradorModel);
+        colaboradorRepository.salvar(colaboradorModel);
     }
 
     public Page<ColaboradorResponse> listar(ColaboradorFilter colaboradorFilter, Pageable pageable) {
@@ -70,7 +70,7 @@ public class ColaboradorUseCase {
     }
 
     public ColaboradorResponse buscarPorId(Long id) {
-        ColaboradorModel colaboradorModel = colaboradorRepository.findById(id)
+        ColaboradorModel colaboradorModel = colaboradorRepository.buscarPorId(id)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Colaborador", id));
 
         return colaboradorDtoMapper.toResponse(colaboradorModel);
@@ -78,10 +78,10 @@ public class ColaboradorUseCase {
 
     @Transactional
     public void atualizar(Long id, ColaboradorUpdateRequest request) {
-        ColaboradorModel colaboradorModel = colaboradorRepository.findById(id)
+        ColaboradorModel colaboradorModel = colaboradorRepository.buscarPorId(id)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Colaborador", id));
 
-        UsuarioModel usuario = usuarioRepository.findById(colaboradorModel.getUsuarioId())
+        UsuarioModel usuario = usuarioRepository.buscarPorId(colaboradorModel.getUsuarioId())
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Usuario", colaboradorModel.getUsuarioId()));
 
         colaboradorModel.setUsuario(usuario);
@@ -91,8 +91,8 @@ public class ColaboradorUseCase {
             usuario.setSenhaHash(passwordEncoder.encode(request.getSenha()));
         }
 
-        usuarioRepository.save(usuario);
-        colaboradorRepository.save(colaboradorModel);
+        usuarioRepository.salvar(usuario);
+        colaboradorRepository.salvar(colaboradorModel);
     }
 
     @Transactional
@@ -101,37 +101,37 @@ public class ColaboradorUseCase {
             throw new NegocioException("Data de demissão é obrigatória");
         }
 
-        ColaboradorModel colaboradorModel = colaboradorRepository.findById(id)
+        ColaboradorModel colaboradorModel = colaboradorRepository.buscarPorId(id)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Colaborador", id));
 
         if (colaboradorModel.getStatus() == StatusColaborador.DESLIGADO) {
             throw new NegocioException("Colaborador já está desligado");
         }
 
-        UsuarioModel usuario = usuarioRepository.findById(colaboradorModel.getUsuarioId())
+        UsuarioModel usuario = usuarioRepository.buscarPorId(colaboradorModel.getUsuarioId())
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Usuario", colaboradorModel.getUsuarioId()));
 
         usuario.setAtivo(false);
         usuario.setDataAtualizacao(LocalDateTime.now());
-        usuarioRepository.save(usuario);
+        usuarioRepository.salvar(usuario);
 
         colaboradorModel.setStatus(StatusColaborador.DESLIGADO);
         colaboradorModel.setDataDemissao(request.getDataDemissao());
         colaboradorModel.setDataAtualizacao(LocalDateTime.now());
         colaboradorModel.setUsuario(usuario);
 
-        colaboradorRepository.save(colaboradorModel);
+        colaboradorRepository.salvar(colaboradorModel);
     }
     
     @Transactional
     public void excluir(Long id) {
-        ColaboradorModel colaboradorModel = colaboradorRepository.findById(id)
+        ColaboradorModel colaboradorModel = colaboradorRepository.buscarPorId(id)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Colaborador", id));
         
-        colaboradorRepository.delete(colaboradorModel);
+        colaboradorRepository.excluir(colaboradorModel);
         
         if (colaboradorModel.getUsuarioId() != null) {
-            usuarioRepository.deleteById(colaboradorModel.getUsuarioId());
+            usuarioRepository.excluirPorId(colaboradorModel.getUsuarioId());
         }
     }
 

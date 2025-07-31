@@ -40,7 +40,7 @@ public class CargoController {
 
     @PostMapping
     public ResponseEntity<CargoResponse> criar(@Valid @RequestBody CargoRequest request) {
-        cargoUseCase.criar(request);
+        cargoUseCase.cadastrar(request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 

@@ -9,13 +9,10 @@ import com.vilelatech.rh.domain.model.CargoModel;
 import com.vilelatech.rh.ports.CargoRepository;
 import com.vilelatech.rh.ports.DepartamentoRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -27,55 +24,55 @@ public class CargoUseCase {
 
     @Transactional(readOnly = true)
     public Page<CargoResponse> listar(CargoFilter filter, Pageable pageable) {
-        Page<CargoModel> cargos = cargoRepository.findAll(filter, pageable);
+        Page<CargoModel> cargos = cargoRepository.listar(filter, pageable);
         return cargos.map(cargoDtoMapper::modelToResponse);
     }
 
     @Transactional(readOnly = true)
     public CargoResponse buscarPorId(Long id) {
-        CargoModel cargo = cargoRepository.findById(id)
+        CargoModel cargo = cargoRepository.buscarPorId(id)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Cargo não encontrado com ID: " + id));
         return cargoDtoMapper.modelToResponse(cargo);
     }
 
     @Transactional
-    public void criar(CargoRequest request) {
-        departamentoRepository.findById(request.getDepartamentoId())
+    public void cadastrar(CargoRequest request) {
+        departamentoRepository.buscarPorId(request.getDepartamentoId())
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Departamento não encontrado com ID: " + request.getDepartamentoId()));
         
-        if (cargoRepository.existsByNomeAndAtivoTrue(request.getNome())) {
-            throw new IllegalArgumentException("Já existe um cargo ativo com o nome: " + request.getNome());
+        if (cargoRepository.existePorNome(request.getNome())) {
+            throw new IllegalArgumentException("Já existe um cargo com o nome: " + request.getNome());
         }
         
         CargoModel cargoModel = cargoDtoMapper.requestToModel(request);
         cargoModel.setAtivo(true);
-        cargoRepository.save(cargoModel);
+        cargoRepository.salvar(cargoModel);
     }
 
     @Transactional
     public void atualizar(Long id, CargoRequest request) {
-        CargoModel cargoExistente = cargoRepository.findById(id)
+        CargoModel cargoExistente = cargoRepository.buscarPorId(id)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Cargo não encontrado com ID: " + id));
         
-        departamentoRepository.findById(request.getDepartamentoId())
+        departamentoRepository.buscarPorId(request.getDepartamentoId())
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Departamento não encontrado com ID: " + request.getDepartamentoId()));
         
-        if (cargoRepository.existsByNomeAndAtivoTrueAndIdNot(request.getNome(), id)) {
+        if (cargoRepository.existePorNomeComIdDiferente(request.getNome(), id)) {
             throw new IllegalArgumentException("Já existe outro cargo ativo com o nome: " + request.getNome());
         }
         
         cargoDtoMapper.updateModelFromRequest(request, cargoExistente);
         
-        cargoRepository.save(cargoExistente);
+        cargoRepository.salvar(cargoExistente);
     }
 
     @Transactional
     public void inativar(Long id) {
-        CargoModel cargo = cargoRepository.findById(id)
+        CargoModel cargo = cargoRepository.buscarPorId(id)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Cargo não encontrado com ID: " + id));
         
         cargo.setAtivo(false);
-        cargoRepository.save(cargo);
+        cargoRepository.salvar(cargo);
     }
 
     @Transactional
